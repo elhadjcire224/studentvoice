@@ -1,12 +1,25 @@
-import Image from 'next/image'
+import BrandName from "@/components/BrandName";
+import AuthHeader from "@/components/auth/AuthHeader";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-export default function Home() {
+
+export default function Login() {
   return (
-   <div className='bg-red-500'>
-     hello les devs
-     <div
-  className="h-0 w-0 border-b-[30px] border-l-[20px] border-r-[20px] border-b-black border-l-transparent border-r-transparent"
-/>
-   </div>
+
+    <div>
+      <AuthHeader />
+      <section className={cn("flex flex-col items-center py-8 px-4 text-center gap-6 ")}>
+        <BrandName className="text-4xl"/>
+        <p className={cn(" text-gray-500 text-xl font max-w-xl ")}>
+          Echangez des idées et contribuez à façonner une communauté éducative dynamique. Nous croyons en la puissance de la <strong className="underline text-foreground font-bold ">critique constructive</strong> . Chaque commentaire, suggestion et évaluation contribuent à l'amélioration continue de nos cours et à l'enrichissement de votre expérience d'apprentissage.
+        </p>
+
+        <Link href={"/login"}><Button variant={"primary"} size={"lg"}>Participez <ArrowRight /> </Button></Link>
+      </section>
+    </div>
+
   )
 }

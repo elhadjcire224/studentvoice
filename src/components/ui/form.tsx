@@ -1,19 +1,42 @@
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
+import {TypeOf, ZodSchema} from "zod"
+import {zodResolver} from '@hookform/resolvers/zod'
 import {
   Controller,
   ControllerProps,
   FieldPath,
   FieldValues,
   FormProvider,
+  SubmitHandler,
+  UseFormReturn,
+  useForm,
   useFormContext,
 } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 
-const Form = FormProvider
+type FormProps<T extends FieldValues> = Omit<React.ComponentProps<"form">,"onSubmit"> & {
+  form: UseFormReturn<T>,
+  onSubmit: SubmitHandler<T>
+}
+
+const Form = <T extends FieldValues>({
+  form,
+  children,onSubmit,className, ...props
+}:FormProps<T>) => {
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
+        <fieldset className={className}>
+          {children}
+        </fieldset>
+      </form>
+    </FormProvider>
+  )
+}
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -164,6 +187,19 @@ const FormMessage = React.forwardRef<
 })
 FormMessage.displayName = "FormMessage"
 
+type UseZodFormProps<T extends ZodSchema> = Exclude<FormProps<TypeOf<T>>,"resolver"> & {
+  schema:T
+}
+
+const useZodForm = <T extends ZodSchema>({
+  schema,...formProps
+}:UseZodFormProps<T>) =>{
+  return useForm({
+    ...formProps,
+    resolver: zodResolver(schema)
+  })
+}
+
 export {
   useFormField,
   Form,
@@ -173,4 +209,5 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  useZodForm
 }
