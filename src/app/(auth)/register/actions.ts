@@ -1,13 +1,12 @@
-import { prisma } from "@/db/prisma"
+"use server"
+import { isEmailUsed } from "@/lib/utils"
 
-export async function registerStudent(formData:FormData){
-    "use server"
-    const users = await prisma.user.findMany()
-    console.log(users)
+export async function registerStudent(formData: any) {
+
+    return isEmailUsed(formData.email)
 }
 
-export async function registerTeacher(formData:FormData) {
-    "use server"
+export async function registerTeacher(formData: any) {
 
-    
+
 }
