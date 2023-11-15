@@ -9,7 +9,7 @@ export default function Page() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Creation d'un compte</CardTitle>
+                <CardTitle>Creation d un compte</CardTitle>
                 <CardDescription>
                     Creer un compte pour participer  mais si vous avez un compte vous pouvez vous en cliquant  <Link className="text-blue-500" href={"/login"}>ici</Link>
                 </CardDescription>
