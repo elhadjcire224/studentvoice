@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -14,39 +13,39 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { registerStudent } from "./actions"
-const formSchema = z.object({
-    username: z.string().min(4, "Le nom d'utilisateur est trop court"),
-    email: z.string().email("entrez un mail valide"),
-    password: z.string().min(8, "le mot de passe est trop court"),
-    confirmPassword: z.string()
-}).refine((data) => data.password === data.confirmPassword, { message: "les mots de passe doivent correspondre ", path: ["confirmPassword"] })
+import toast from "react-hot-toast"
+import { studentFormSchema } from "@/types/zodSchema"
+
 
 export default function StudentRegisterForm() {
-
-
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof studentFormSchema>>({
+        resolver: zodResolver(studentFormSchema),
+        defaultValues:{
+            username:"",
+            email:"",
+            password:"",
+            confirmPassword:""
+        }
     })
 
     // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof studentFormSchema>) {
+        toast.error(`l'utilisateur avec l'email ${values.email} existe deja veuillez choisir un autre`,{duration:5000})
         form.reset()
-        const r = await registerStudent(values)
-        alert(r)
     }
     return (
 
-        
-        <Form {...form}>
+        <Form  {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 p-4">
                 <FormField
+
                     control={form.control}
                     name="username"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Username</FormLabel>
                             <FormControl>
-                                <Input required placeholder="shadcn" {...field} />
+                                <Input onReset={() => alert('reset')} required placeholder="shadcn" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -71,7 +70,7 @@ export default function StudentRegisterForm() {
                         <FormItem>
                             <FormLabel>Mot de passe</FormLabel>
                             <FormControl>
-                                <Input required placeholder="MonSuperMotDePasse224" {...field} />
+                                <Input type="password" required placeholder="MonSuperMotDePasse224" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -84,7 +83,7 @@ export default function StudentRegisterForm() {
                         <FormItem>
                             <FormLabel>Comfirmer mot de passe</FormLabel>
                             <FormControl>
-                                <Input required {...field} />
+                                <Input type="password" required {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

@@ -3,9 +3,11 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import Link from "next/link";
 import TeacherRegisterForm from "./teacher-register-form";
 import StudentRegisterForm from "./student-register-form";
+import { fetchSubjectsWithoutUsers } from "@/lib/data";
 
 
-export default function Page() {
+export default async function Page() {
+    const subjects = await fetchSubjectsWithoutUsers()
     return (
         <Card>
             <CardHeader>
@@ -24,7 +26,7 @@ export default function Page() {
                         <StudentRegisterForm />
                     </TabsContent>
                     <TabsContent value="teacher">
-                        <TeacherRegisterForm />
+                        <TeacherRegisterForm subjects={subjects}/>
                     </TabsContent>
                 </Tabs>
             </CardContent>
