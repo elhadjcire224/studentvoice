@@ -15,31 +15,54 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { registerTeacher } from "./actions"
-const formSchema = z.object({
-    name: z.string().min(4, "Le nom est trop court"),
-    email: z.string().email("entrez un mail valide"),
-    subject:z.string({required_error:"selectionnez votre matiere s'il vous plait"}),
-    password: z.string().min(8, "le mot de passe est trop court"),
-    confirmPassword: z.string()
-}).refine((data) => data.password === data.confirmPassword, { message: "les mots de passe doivent correspondre ", path: ["confirmPassword"] })
+import { teacherFormSchema } from "@/types/zodSchema"
+import toast from "react-hot-toast"
+import { useState } from "react"
+import { subject } from "@/lib/definitions"
+import { useRouter } from "next/navigation"
+import AccountVerificationAlert from "@/components/AccountVerificationAlert"
 
-export default function TeacherRegisterForm() {
 
-    
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+
+
+export default function TeacherRegisterForm({ subjects }: { subjects: subject[] }) {
+    const [openDialog, setOpenDialog] = useState(false)
+    const router = useRouter()
+    const form = useForm<z.infer<typeof teacherFormSchema>>({
+        resolver: zodResolver(teacherFormSchema),
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            subject:"",
+        }
     })
 
-    
+    async function onSubmit(values: z.infer<typeof teacherFormSchema>) {
 
-    // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const response = {success:true,message:'colll'}
         form.reset()
-        const r = await registerTeacher(values)
-        alert(r)
+        if(response.success){
+            toast.success("votre compte est enregister avec succees")
+            setOpenDialog(true)
+            return
+        }
+
+        form.setError("email", { type:"custom", message: response.message })
+        toast.error(response.message)
+        // const resutl = await registerTeacher(values)
+        // if (resutl.success){
+        //     toast.success(resutl.message)
+        // }else{
+        //     toast.error(resutl.message)
+        // }
+
+
     }
     return (
         <>
+            <AccountVerificationAlert openDialog={openDialog} setOpenDialog={setOpenDialog}/>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 p-1">
                     <mark className="italic bg-background  text-foreground underline">NB:Les comptes profs vont necessités une validation coté moderateur donc votre compte ne sera pas disponible tout de suite</mark>
@@ -55,31 +78,29 @@ export default function TeacherRegisterForm() {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    /> 
+                    />
                     <FormField
                         control={form.control}
                         name="subject"
                         render={({ field }) => (
                             <FormItem >
                                 <FormLabel>Matiere</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a verified email to display" />
+                                            {field.value ? <SelectValue placeholder="selectionnez votre matiere" />:"selectionez votre matiere"}
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="droit">droit</SelectItem>
-                                        <SelectItem value="saari">sarri</SelectItem>
-                                        <SelectItem value="compta societe">compta societe</SelectItem>
+                                        {subjects.map((subject) => <SelectItem key={subject.id} value={subject.id}>{subject.name}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
-                                
+
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    
+
                     <FormField
                         control={form.control}
                         name="email"
@@ -118,7 +139,7 @@ export default function TeacherRegisterForm() {
                             </FormItem>
                         )}
                     />
-                    <Button className="text-left" type="submit">Creer</Button>
+                    <Button  className="text-left" type="submit">Creer</Button>
                 </form>
             </Form>
         </>

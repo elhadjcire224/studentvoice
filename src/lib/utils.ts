@@ -14,3 +14,18 @@ export async function isEmailUsed(email: string) {
   });
   return isEmailUsed
 }
+
+export async function requestpermission(){
+  
+  if (Notification.permission !== 'granted') {
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Permission accordée pour les notifications.');
+        // Enregistre le token de l'utilisateur ou effectue d'autres opérations liées aux notifications
+      } else {
+        console.warn('Permission refusée pour les notifications.');
+      }
+    });
+  }
+
+}
