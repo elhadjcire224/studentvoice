@@ -14,38 +14,51 @@ import {
 import { Input } from "@/components/ui/input"
 import { registerStudent } from "./actions"
 import toast from "react-hot-toast"
-import { studentFormSchema } from "@/types/zodSchema"
+import { studentFormSchema, studentFormType } from "@/lib/definitions"
+import { useRouter } from "next/navigation"
+import { routes } from "@/lib/routes"
+import Loader from "@/components/loader"
 
 
 export default function StudentRegisterForm() {
-    const form = useForm<z.infer<typeof studentFormSchema>>({
+    const router = useRouter()
+    const form = useForm<studentFormType>({
         resolver: zodResolver(studentFormSchema),
-        defaultValues:{
-            username:"",
-            email:"",
-            password:"",
-            confirmPassword:""
+        defaultValues: {
+            username: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
         }
     })
 
-    // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof studentFormSchema>) {
-        toast.error(`l'utilisateur avec l'email ${values.email} existe deja veuillez choisir un autre`,{duration:5000})
+    async function onSubmit(values: studentFormType) {
+
+        const response = await registerStudent(values)
         form.reset()
+        if (response.success) {
+            toast.success("votre compte est enregister avec succees")
+            router.refresh()
+            router.push(routes.LOGIN)
+            return
+        }
+
+        form.setError("email", { type: "custom", message: response.message })
+        toast.error(response.message, { duration: 5000 })
     }
     return (
 
         <Form  {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 p-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 p-1">
                 <FormField
 
                     control={form.control}
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Nom d&lsquo;utilisateur</FormLabel>
                             <FormControl>
-                                <Input onReset={() => alert('reset')} required placeholder="shadcn" {...field} />
+                                <Input type="text"  required placeholder="shadcn" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -89,7 +102,7 @@ export default function StudentRegisterForm() {
                         </FormItem>
                     )}
                 />
-                <Button className="text-left" type="submit">Creer</Button>
+                <Button disabled={form.formState.isSubmitting} className="text-left" type="submit" >{form.formState.isSubmitting && <Loader/>}Creer</Button>
             </form>
         </Form>
 

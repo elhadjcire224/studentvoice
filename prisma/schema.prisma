@@ -48,35 +48,42 @@ model VerificationToken {
 
 model User {
     id            String     @id @default(cuid())
-    name          String?
+    name          String
     email         String?    @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
     password      String
-    verified      Boolean    @default(true)
+    verified      Boolean    @default(false)
     banned        Boolean    @default(false)
-    isInstructor  Boolean    @default(false)
-    admin         Boolean    @default(false)
+    role          Role       @default(STUDENT)
     ip            String?
     createdAt     DateTime   @default(now())
     updatedAt     DateTime   @updatedAt
-    subjectId     String
+    subjectId     String?
     subject       Subject?   @relation(fields: [subjectId], references: [id], onDelete: NoAction)
     campagnes     Campagne[]
     likes         Like[]
     critiques     Critique[]
 }
 
+enum Role {
+    ADMIN
+    STUDENT
+    TEACHER
+}
+
 model Campagne {
-    id        String   @id @default(cuid())
-    userId    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    title     String
-    status    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id               String     @id @default(cuid())
+    userId           String
+    createdAt        DateTime   @default(now())
+    updatedAt        DateTime   @updatedAt
+    title            String
+    closed           Boolean    @default(false)
+    mutiple_critique Boolean    @default(false)
+    critiques        Critique[]
+    user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Critique {
@@ -89,15 +96,16 @@ model Critique {
     shadowed   Boolean  @default(false)
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
+    campagne   Campagne @relation(fields: [campagneId], references: [id], onDelete: Cascade)
     user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     likes      Like[]
 }
 
 model Like {
-    id         String   @id @default(cuid())
+    id         String   @id @default(cuid()) 
     userId     String
     critiqueId String
-    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
     user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     critique   Critique @relation(fields: [critiqueId], references: [id], onDelete: Cascade)
 }

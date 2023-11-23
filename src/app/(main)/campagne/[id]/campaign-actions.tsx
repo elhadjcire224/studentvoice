@@ -1,0 +1,41 @@
+"use client";
+
+import { campaignDetailsType } from "@/db/queries/campagne.query";
+import { useSession } from "next-auth/react";
+import AddCritiqueButton from "./add-critique-button";
+import UpdateCampaignButton from "./update-campagne-button";
+import { Role } from "@prisma/client";
+import { Button } from "@/components/ui/button";
+
+
+export default  function CampaignActions({
+	campaign,
+	morethanOne
+}: {
+	campaign: campaignDetailsType,
+	morethanOne:any
+}) {
+	const session = useSession();
+	const user = session.data.user
+	
+	const canUserCritique = (user.role == Role.STUDENT || user.role == Role.ADMIN) && (campaign.mutiple_critique || morethanOne <= 1)
+	console.log(morethanOne)
+	return (
+		<>
+			{
+				!campaign.closed && (
+					<>
+						{
+							session?.data?.user.id === campaign?.user.id
+								? (
+									<UpdateCampaignButton campaign={campaign} />
+								)
+								:canUserCritique ?<AddCritiqueButton campaignId={campaign.id}/> : <Button size={"sm"} className="bg-gold capitalize" disabled>Critiquer</Button>
+						}
+
+					</>
+				)
+			}
+		</>
+	);
+}

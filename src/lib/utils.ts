@@ -1,31 +1,46 @@
 import prisma from "@/db/prisma";
 import { type ClassValue, clsx } from "clsx"
+import { useSession } from "next-auth/react";
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function isEmailUsed(email: string) {
-  const isEmailUsed = !! await prisma.user.count({
-    where: {
-      email
-    },
-  });
-  return isEmailUsed
+
+
+export function requestpermission() {
+  const event = new CustomEvent("askperm", {
+    detail: {},
+    bubbles: true,
+    cancelable: true,
+    composed: false,
+  })
+  document.dispatchEvent(event)
 }
 
-export async function requestpermission(){
-  
-  if (Notification.permission !== 'granted') {
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'granted') {
-        console.log('Permission accordée pour les notifications.');
-        // Enregistre le token de l'utilisateur ou effectue d'autres opérations liées aux notifications
-      } else {
-        console.warn('Permission refusée pour les notifications.');
-      }
-    });
+export function getInitials(name:string|null) {
+  if(!name) return null
+  const words = name.split(' ');
+
+  const initials = words.map(word => word.charAt(0).toUpperCase());
+
+  const firstTwoInitials = initials.slice(0, 2).join('').slice(0, 2);
+  return firstTwoInitials;
+}
+
+export function truncate30(chaine: string): string {
+  if (chaine.length > 30) {
+    return chaine.slice(0, 27) + "...";
+  } else {
+    return chaine;
   }
-
 }
+
+export function formatDate(date:Date) {
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  const formattedDate = new Date(date).toLocaleDateString('fr-FR', options);
+  return formattedDate;
+}
+
+

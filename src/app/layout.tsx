@@ -1,33 +1,40 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css"
 import { ThemeProvider } from "@/theme/ThemeProvider";
 import { cn } from "@/lib/utils";
 import { Toaster } from 'react-hot-toast'
 import Script from "next/script";
+import { getServerSession } from "next-auth";
+import AuthProvider from "@/lib/session-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+
+const roboto = Roboto({ subsets: ["latin"], weight: ["100","300" ,"400" ,"500" ,"700" ,"900"]});
 
 export const metadata: Metadata = {
 	title: "Student Voice",
 	description:
 		"Une app pour faciliter l' échange entre prof et etudiants de maniere constructive",
-	manifest:"/manifest.json",
+	manifest: "/manifest.json",
 	
+
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const session = await getServerSession()
 	return (
 		<html lang="fr" className="h-full">
-			<body className={cn(inter.className, "bg-background w-full", 'h-full')}>
-				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>{children}</ThemeProvider>
+			<body className={cn(roboto.className, "bg-background w-full max-w-lg mx-auto", 'h-full')}>
+				<AuthProvider session={session}>
+					<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>{children}</ThemeProvider>
+				</AuthProvider>
 				<Toaster position="top-right" />
 			</body>
-			<Script id="serviceworker" src="/js.js"/>
+			<Script id="serviceworker" src="/js.js" />
 		</html>
 	);
 }

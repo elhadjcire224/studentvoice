@@ -15,23 +15,22 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { registerTeacher } from "./actions"
-import { teacherFormSchema } from "@/types/zodSchema"
+import { teacherFormSchema, teacherFormType } from "@/lib/definitions"
 import toast from "react-hot-toast"
 import { useState } from "react"
 import { subject } from "@/lib/definitions"
-import { useRouter } from "next/navigation"
 import AccountVerificationAlert from "@/components/AccountVerificationAlert"
+import Loader from "@/components/loader"
 
 
 
 
 export default function TeacherRegisterForm({ subjects }: { subjects: subject[] }) {
     const [openDialog, setOpenDialog] = useState(false)
-    const router = useRouter()
-    const form = useForm<z.infer<typeof teacherFormSchema>>({
+    const form = useForm<teacherFormType>({
         resolver: zodResolver(teacherFormSchema),
         defaultValues: {
-            name: "",
+            username: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -39,9 +38,9 @@ export default function TeacherRegisterForm({ subjects }: { subjects: subject[] 
         }
     })
 
-    async function onSubmit(values: z.infer<typeof teacherFormSchema>) {
+    async function onSubmit(values:teacherFormType) {
 
-        const response = {success:true,message:'colll'}
+        const response = await registerTeacher(values)
         form.reset()
         if(response.success){
             toast.success("votre compte est enregister avec succees")
@@ -50,14 +49,7 @@ export default function TeacherRegisterForm({ subjects }: { subjects: subject[] 
         }
 
         form.setError("email", { type:"custom", message: response.message })
-        toast.error(response.message)
-        // const resutl = await registerTeacher(values)
-        // if (resutl.success){
-        //     toast.success(resutl.message)
-        // }else{
-        //     toast.error(resutl.message)
-        // }
-
+        toast.error(response.message,{duration:5000})
 
     }
     return (
@@ -68,7 +60,7 @@ export default function TeacherRegisterForm({ subjects }: { subjects: subject[] 
                     <mark className="italic bg-background  text-foreground underline">NB:Les comptes profs vont necessités une validation coté moderateur donc votre compte ne sera pas disponible tout de suite</mark>
                     <FormField
                         control={form.control}
-                        name="name"
+                        name="username"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Nom et Prenom</FormLabel>
@@ -87,7 +79,7 @@ export default function TeacherRegisterForm({ subjects }: { subjects: subject[] 
                                 <FormLabel>Matiere</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                                     <FormControl>
-                                        <SelectTrigger>
+                                        <SelectTrigger >
                                             {field.value ? <SelectValue placeholder="selectionnez votre matiere" />:"selectionez votre matiere"}
                                         </SelectTrigger>
                                     </FormControl>
@@ -120,7 +112,7 @@ export default function TeacherRegisterForm({ subjects }: { subjects: subject[] 
                             <FormItem>
                                 <FormLabel>Mot de passe</FormLabel>
                                 <FormControl>
-                                    <Input required placeholder="MonSuperMotDePasse224" {...field} />
+                                    <Input type="password" required placeholder="MonSuperMotDePasse224" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -133,13 +125,13 @@ export default function TeacherRegisterForm({ subjects }: { subjects: subject[] 
                             <FormItem>
                                 <FormLabel>Comfirmer mot de passe</FormLabel>
                                 <FormControl>
-                                    <Input required {...field} />
+                                    <Input type="password" placeholder="MonSuperMotDePasse224" required {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <Button  className="text-left" type="submit">Creer</Button>
+                    <Button disabled={form.formState.isSubmitting} className="text-left" type="submit" >{form.formState.isSubmitting && <Loader />}Creer</Button>
                 </form>
             </Form>
         </>

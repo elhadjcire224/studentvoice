@@ -1,32 +1,28 @@
 "use server"
 import prisma from "@/db/prisma";
 import { hash } from "bcrypt";
-import { isEmailUsed } from "@/lib/utils"
-import { teacherFormType } from "@/types/zodSchema";
+import { Role, studentFormType, teacherFormType } from "@/lib/definitions";
+import { getUserByEmail } from "@/db/queries/user.query";
+import {unstable_noStore as noStore} from 'next/cache'
 
 
 export async function registerTeacher(values: teacherFormType) {
+    noStore()
     try {
-        const existingUser = await prisma.user.findUnique({
-            where: {
-                email: values.email,
-            },
-        });
-
+        const existingUser = await getUserByEmail(values.email)
+        
         if (existingUser) {
             return { success: false, message: 'un utilisateur avec cet email exist deja' };
         }
 
-
         const hashedPassword = await hash(values.password, 10);
-        const subject = await prisma.subject.findFirst()
         const newUser = await prisma.user.create({
             data: {
                 email: values.email,
                 password: hashedPassword,
-                name:values.name,
-                subjectId: subject?.id,
-                verified:false
+                name:values.username,
+                subjectId: values.subject,
+                role:Role.TEACHER
             },
         });
 
@@ -38,7 +34,29 @@ export async function registerTeacher(values: teacherFormType) {
 }
 
 
-export async function registerStudent(values: any) {
+export async function registerStudent(values: studentFormType) {
+    noStore()
+    try {
+        const existingUser = await getUserByEmail(values.email)
 
+        if (existingUser) {
+            return { success: false, message: 'un utilisateur avec cet email exist deja' };
+        }
+
+        const hashedPassword = await hash(values.password, 10);
+        const newUser = await prisma.user.create({
+            data: {
+                email: values.email,
+                password: hashedPassword,
+                name: values.username,
+                role:Role.STUDENT
+            },
+        });
+
+        return { success: true, message: 'Etudiant enregistré avec succès' };
+    } catch (erreur) {
+        console.error('Erreur lors de l\'enregistrement de l\'etudiant :', erreur);
+        return { success: false, message: 'Une erreur s\'est produite lors de l\'enregistrement de l\'etudiant ' };
+    }
 
 }

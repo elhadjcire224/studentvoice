@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('ADMIN', 'STUDENT', 'TEACHER');
+
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -36,17 +39,18 @@ CREATE TABLE "VerificationToken" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "name" TEXT,
+    "name" TEXT NOT NULL,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "password" TEXT NOT NULL,
+    "verified" BOOLEAN NOT NULL DEFAULT false,
     "banned" BOOLEAN NOT NULL DEFAULT false,
-    "isInstructor" BOOLEAN NOT NULL DEFAULT false,
-    "subject" TEXT,
-    "admin" BOOLEAN NOT NULL DEFAULT false,
+    "role" "Role" NOT NULL DEFAULT 'STUDENT',
     "ip" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "subjectId" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -56,8 +60,10 @@ CREATE TABLE "Campagne" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" TEXT NOT NULL,
-    "status" TEXT NOT NULL,
+    "closed" BOOLEAN NOT NULL DEFAULT false,
+    "mutiple_critique" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Campagne_pkey" PRIMARY KEY ("id")
 );
@@ -72,6 +78,7 @@ CREATE TABLE "Critique" (
     "content" TEXT NOT NULL,
     "shadowed" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Critique_pkey" PRIMARY KEY ("id")
 );
@@ -81,9 +88,19 @@ CREATE TABLE "Like" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "critiqueId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Like_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Subject" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Subject_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -118,7 +135,13 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_subjectId_fkey" FOREIGN KEY ("subjectId") REFERENCES "Subject"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Campagne" ADD CONSTRAINT "Campagne_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Critique" ADD CONSTRAINT "Critique_campagneId_fkey" FOREIGN KEY ("campagneId") REFERENCES "Campagne"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Critique" ADD CONSTRAINT "Critique_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

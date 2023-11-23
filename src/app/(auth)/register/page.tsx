@@ -3,7 +3,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import Link from "next/link";
 import TeacherRegisterForm from "./teacher-register-form";
 import StudentRegisterForm from "./student-register-form";
-import { fetchSubjectsWithoutUsers } from "@/lib/data";
+import { fetchSubjectsWithoutUsers } from "@/db/queries/subject.queries";
+import { routes } from "@/lib/routes";
 
 
 export default async function Page() {
@@ -11,9 +12,9 @@ export default async function Page() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Creation d un compte</CardTitle>
+                <CardTitle>Creation d&rsquo;un compte</CardTitle>
                 <CardDescription>
-                    Creer un compte pour participer  mais si vous avez un compte vous pouvez vous en cliquant  <Link className="text-blue-500" href={"/login"}>ici</Link>
+                    Creer un compte pour participer  mais si vous avez un compte vous pouvez vous en cliquant  <Link className="text-blue-500" href={routes.LOGIN}>ici</Link>
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
