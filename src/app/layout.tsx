@@ -27,8 +27,8 @@ export default async function RootLayout({
 }) {
 	const session = await getServerSession()
 	return (
-		<html lang="fr" className="h-full">
-			<body className={cn(roboto.className, "bg-background w-full max-w-lg mx-auto", 'h-full')}>
+		<html lang="fr" className="h-full flex flex-col items-center">
+			<body className={cn(roboto.className, "bg-backgroun w-[32rem] max-w-lg mx-auto relative", 'h-full')}>
 				<AuthProvider session={session}>
 					<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>{children}</ThemeProvider>
 				</AuthProvider>

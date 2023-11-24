@@ -2,7 +2,7 @@ import prisma from '@/db/prisma';
 import { unstable_noStore as noStore } from 'next/cache'
 import {Resend} from 'resend'
 import {render} from '@react-email/render'
-import VerifiedTeacherEmail from '@/components/emails/verified-teacher-email'
+import VerifiedTeacherEmail from '../../../emails/verified-teacher-email'
 import { User } from '@prisma/client';
 export async function getUserByEmail(email: string) {
     noStore()

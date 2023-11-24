@@ -6,6 +6,7 @@ import AddCritiqueButton from "./add-critique-button";
 import UpdateCampaignButton from "./update-campagne-button";
 import { Role } from "@prisma/client";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 
 export default  function CampaignActions({
@@ -19,7 +20,7 @@ export default  function CampaignActions({
 	const user = session.data?.user
 
 	if(!campaign) throw new Error("cannot see campaign details")
-	
+	console.log("campagne actions",user)
 	const canUserCritique = (user?.role == Role.STUDENT || user?.role == Role.ADMIN) && (campaign.mutiple_critique || morethanOne <= 1)
 	console.log(morethanOne)
 	return (
