@@ -1,5 +1,6 @@
 "use client"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { unSignaledCritiques } from "@/db/queries/campagne.query";
 import { deleteCritique, signalCritique } from "@/db/queries/critique.query";
 import { Critique, Role } from "@prisma/client";
 import { Flag, MoreHorizontal, PenLine, Trash2 } from "lucide-react";
@@ -7,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-export default function CritiqueButtonActions({ critique,campaignId }: { critique: Critique,campaignId }) {
+export default function CritiqueButtonActions({ critique,campaignId }: { critique: unSignaledCritiques,campaignId:string }) {
     const session = useSession()
     const router = useRouter()
     return (

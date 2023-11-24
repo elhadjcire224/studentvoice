@@ -43,7 +43,7 @@ export async function signalCritique(critiqueId: string) {
     return { success: true, message: "critique signalé avec success \n nous prenons en compte votre signalement" }
 }
 
-export async function existingLike(critiqueId: string, userId: string) {
+export async function existingLike(critiqueId: string, userId?: string) {
     noStore();
     const isExistingLike = await prisma.like.findFirst({
         where: {
@@ -63,8 +63,9 @@ export async function existingLike(critiqueId: string, userId: string) {
     return isExistingLike
 }
 
-export async function toggleLikeCritique(critiqueId: string, userId: string) {
+export async function toggleLikeCritique(critiqueId: string, userId?: string) {
     noStore()
+    if (!userId) throw new Error("userId is null")
     const isLiked = await existingLike(critiqueId, userId)
 
     if (isLiked) {
@@ -81,7 +82,7 @@ export async function toggleLikeCritique(critiqueId: string, userId: string) {
         await prisma.like.create({
             data: {
                 critiqueId,
-                userId
+                userId 
             }
         });
 

@@ -37,7 +37,7 @@ export default function CreateCampaignForm({closeDialog}:Props) {
     async function onSubmit(values: createCampaignFormType) {
         form.reset()
 
-        const result = await createCampagne(values, user.id)
+        const result = await createCampagne(values, user.id as string)
         if (result.success) {
             toast.success(result.message)
             router.refresh()

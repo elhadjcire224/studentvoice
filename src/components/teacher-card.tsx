@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 
 
-export default function TeacherCard({user}:{user:User}) {
+export default function TeacherCard({user}:{user:any}) {
     const router = useRouter()
 	
 	return (

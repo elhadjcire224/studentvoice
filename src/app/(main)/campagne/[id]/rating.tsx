@@ -1,8 +1,8 @@
 import React from 'react';
 import { Rating } from '@smastrom/react-rating';
 import '@smastrom/react-rating/style.css'
-const RatingStars = ({defaultValue, setter}) => {
-    const handleRatingChange = (value) => {
+const RatingStars = ({defaultValue, setter}:{defaultValue:any,setter:any}) => {
+    const handleRatingChange = (value:number) => {
         setter(value);
         console.log(value)
     };

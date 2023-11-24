@@ -13,7 +13,7 @@ export default async function Page() {
   return (
     <section className="flex flex-col gap-4 ">
       <div className="font-extrabold text-2xl p-4">
-        Non Verified Teachers
+        Unverified Teachers
       </div>
       <div>
         <Separator/>

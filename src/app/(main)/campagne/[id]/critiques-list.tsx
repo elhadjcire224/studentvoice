@@ -1,8 +1,9 @@
 import { Critique } from "@prisma/client"
 import CritiqueCard from "./critique"
+import { campaignDetailsType, unSignaledCritiques } from "@/db/queries/campagne.query"
 
 type Props = {
-    critiques:Critique[],
+    critiques: unSignaledCritiques[],
     campaignId:string
 }
 export default function CritiquesList({critiques,campaignId}:Props) {

@@ -20,7 +20,7 @@ type Props = {
 
 export default function CampagneCard({ campaign }: Props) {
     const session = useSession()
-    const user = session.data.user
+    const user = session.data?.user
     return (
         <>
             <Separator />
@@ -34,7 +34,7 @@ export default function CampagneCard({ campaign }: Props) {
                     <div>
                         
                         <AvatarProf
-                            subject={campaign.user.subject.name}
+                            subject={campaign.user?.subject?.name}
                             name={campaign.user.name}
                             image={campaign.user.image}
                         />

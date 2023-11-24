@@ -1,7 +1,8 @@
 import prisma from '@/db/prisma';
 import { unstable_noStore as noStore } from 'next/cache'
 import {Resend} from 'resend'
-import VerifiedTeacherEmail from '../../../emails/verified-teacher-email';
+import {render} from '@react-email/render'
+import VerifiedTeacherEmail from '@/components/emails/verified-teacher-email'
 import { User } from '@prisma/client';
 export async function getUserByEmail(email: string) {
     noStore()
@@ -34,16 +35,17 @@ export async function verifyUser(userId: string) {
     return user
 }
 
-export async function emailVeriedUser(user:User){
-
-    const resend = new Resend(process.env.RESEND_API_KEY);
+export async function emailVeriedUser(user:any){
 
     const name = user.name
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const text = render(VerifiedTeacherEmail({name}))
+
     const data = await resend.emails.send({
         from: 'StudentVoice <onboarding@resend.dev>',
-        to: [user.email],
-        subject: 'Compte vefied',
-        react: VerifiedTeacherEmail({name})
+        to: [user.email as string],
+        subject: 'Compte verifiée',
+        html:text
     });
 
     return {sucess:true,data:data}

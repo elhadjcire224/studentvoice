@@ -10,9 +10,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { routes } from "@/lib/routes"
 import { signOut, useSession } from "next-auth/react"
 import { Role } from "@prisma/client"
+import { useRouter } from "next/navigation"
 export default function FooterNav() {
     const pathname = usePathname();
     const session = useSession()
+    const router = useRouter()
     
     const navitems: naveitem[] = [
         {
@@ -46,7 +48,7 @@ export default function FooterNav() {
                 })
             }
             {
-                session.data.user.role === Role.ADMIN && (<Link href={routes.ADMIN} key={routes.ADMIN} className={cn('p-2 rounded-lg flex-1 flex items-center justify-center',
+                session?.data?.user.role === Role.ADMIN && (<Link href={routes.ADMIN} key={routes.ADMIN} className={cn('p-2 rounded-lg flex-1 flex items-center justify-center',
                     {
                         "bg-bg": pathname == routes.ADMIN
                     }
@@ -60,14 +62,15 @@ export default function FooterNav() {
             <Popover >
                 <PopoverTrigger  asChild className="border-2 border-foreground mr-4 ">
                     <Avatar>
-                        <AvatarImage  src={session.data?.user.image} alt={session.data?.user.name}/>
-                        <AvatarFallback >{getInitials(session.data?.user.name)}</AvatarFallback>
+                        <AvatarImage  src={session.data?.user.image as string} alt={session.data?.user.name as string}/>
+                        <AvatarFallback >{getInitials(session.data?.user.name as string)}</AvatarFallback>
                     </Avatar>
                 </PopoverTrigger>
                 <PopoverContent  className=" w-32 flex flex-col p-0 gap-1 bg-secondary">
                     
                     <Link href={routes.PROFILE} className={buttonVariants({variant:'default'})}><User2/>Profile</Link>
-                    <Button onClick={async ()=>await signOut()}><LogOut/>deconnexion</Button>
+                    <Button onClick={async ()=>{
+                        await signOut({redirect:true});router.refresh()}}><LogOut/>deconnexion</Button>
                 </PopoverContent>
             </Popover>
         </nav>

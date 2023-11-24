@@ -20,9 +20,7 @@ const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : '';
 
-export  const VerifiedTeacherEmail = ({
-    name
-}: KoalaWelcomeEmailProps) => (
+const VerifiedTeacherEmail = ({name}: KoalaWelcomeEmailProps) => (
     <Html>
         <Head />
         <Preview>
@@ -44,7 +42,7 @@ export  const VerifiedTeacherEmail = ({
                     constructifs sur les cours, favorisant ainsi un environnement d&lsquo;apprentissage amélioré.
                 </Text>
                 <Section style={btnContainer}>
-                    <Button pX={12} pY={12} style={button} href="https://studentvoice.vercel.app/campagne">
+                    <Button  style={button} href="https://studentvoice.vercel.app/campagne">
                         Commencer
                     </Button>
                 </Section>
@@ -61,8 +59,6 @@ export  const VerifiedTeacherEmail = ({
 
 
 );
-
-export default VerifiedTeacherEmail;
 
 const main = {
     backgroundColor: '#ffffff',
@@ -89,7 +85,7 @@ const btnContainer = {
 };
 
 const button = {
-    backgroundColor: '#5F51E8',
+    backgroundColor: '#ffbe32',
     borderRadius: '3px',
     color: '#fff',
     fontSize: '16px',
@@ -108,3 +104,5 @@ const footer = {
     color: '#8898aa',
     fontSize: '12px',
 };
+
+export default VerifiedTeacherEmail;

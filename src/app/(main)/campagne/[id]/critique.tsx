@@ -6,11 +6,13 @@ import CritiqueButtonActions from "./critique-button-actions";
 import { existingLike } from "@/db/queries/critique.query";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { StreamOptions } from "stream";
+import { unSignaledCritiques } from "@/db/queries/campagne.query";
 
 
-export default async function CritiqueCard({critique,campaignId}:{critique:Critique,campaignId:string}) {
+export default async function CritiqueCard({critique,campaignId}:{critique:unSignaledCritiques,campaignId:string}) {
     const session = await getServerSession(options)
-    const isLiked =!! await existingLike(critique.id,session?.user.id)
+    const isLiked =!! await existingLike(critique.id,session?.user?.id as string)
     return (
         <Card>
             <CardHeader className="pt-2 text-sm flex flex-row gap-4 justify-end items-center">
@@ -21,7 +23,7 @@ export default async function CritiqueCard({critique,campaignId}:{critique:Criti
                 {critique.content}
             </CardContent>
             <CardFooter className="p-2 ">
-                <LikeButton isLiked={isLiked} critiqueId={critique.id}/>{critique._count.likes}
+                <LikeButton isLiked={isLiked} critiqueId={critique.id}/>{critique._count.likes as any}
             </CardFooter>
         </Card>
     )

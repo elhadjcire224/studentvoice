@@ -11,7 +11,7 @@ export default function AvatarProf({name,image,subject}:Props) {
         <Popover>
             <PopoverTrigger>
                 <Avatar className="h-16 w-16 border-2 border-foreground">
-                    <AvatarImage src={image} alt={`profile de ${name}`}/>
+                    <AvatarImage src={image as string} alt={`profile de ${name}`}/>
                     <AvatarFallback className="text-2xl font-semibold">{getInitials(name)}</AvatarFallback>
                 </Avatar>
             </PopoverTrigger>

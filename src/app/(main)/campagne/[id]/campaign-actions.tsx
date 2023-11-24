@@ -16,9 +16,11 @@ export default  function CampaignActions({
 	morethanOne:any
 }) {
 	const session = useSession();
-	const user = session.data.user
+	const user = session.data?.user
+
+	if(!campaign) throw new Error("cannot see campaign details")
 	
-	const canUserCritique = (user.role == Role.STUDENT || user.role == Role.ADMIN) && (campaign.mutiple_critique || morethanOne <= 1)
+	const canUserCritique = (user?.role == Role.STUDENT || user?.role == Role.ADMIN) && (campaign.mutiple_critique || morethanOne <= 1)
 	console.log(morethanOne)
 	return (
 		<>
@@ -26,11 +28,11 @@ export default  function CampaignActions({
 				!campaign.closed && (
 					<>
 						{
-							session?.data?.user.id === campaign?.user.id
+							session?.data?.user.id === campaign?.user?.id
 								? (
 									<UpdateCampaignButton campaign={campaign} />
 								)
-								:canUserCritique ?<AddCritiqueButton campaignId={campaign.id}/> : <Button size={"sm"} className="bg-gold capitalize" disabled>Critiquer</Button>
+								:canUserCritique ?<AddCritiqueButton campaignId={campaign.id as string}/> : <Button size={"sm"} className="bg-gold capitalize" disabled>Critiquer</Button>
 						}
 
 					</>

@@ -7,7 +7,7 @@ function calculateRatingInfo(critiques: any) {
 
     console.log(critiques)
     const totalReviews = critiques.length;
-    const totalRating = critiques ? critiques.reduce((acc, critique) => acc + critique.rate, 0) : 0;
+    const totalRating = critiques ? critiques.reduce((acc:number, critique:any) => acc + critique.rate, 0) : 0;
     const averageRating = totalReviews > 0 ? (totalRating / totalReviews).toFixed(1) : '0.0';
 
     return {
@@ -67,6 +67,34 @@ export async function fetchCampaigns() {
 }
 
 export type CampaignHome = Prisma.PromiseReturnType<typeof fetchCampaigns>[number]
+export async function fetchUnsignaledCritiques(campaingId:string) {
+    noStore()
+
+    return await prisma.critique.findMany({
+        where:{
+            campagneId:campaingId
+        },
+        orderBy: {
+            updatedAt: "desc"
+        },
+
+        select: {
+            _count: {
+                select: {
+                    likes: true
+                }
+            },
+
+            updatedAt: true,
+            rate: true,
+            content: true,
+            signaled: true,
+            id: true
+        }
+    })
+}
+
+export type unSignaledCritiques = Prisma.PromiseReturnType<typeof fetchUnsignaledCritiques>[number]
 
 export async function fetchCampaignById(campaignId: string) {
     noStore()
@@ -127,7 +155,16 @@ export async function fetchCampaignById(campaignId: string) {
 
         }
     })
-    const { totalReviews, averageRating } = calculateRatingInfo(campaign.critiques);
+    let totalReviews:any = null
+    let averageRating:any = 0.0
+
+    if(campaign?.critiques){
+
+        const result = calculateRatingInfo(campaign.critiques);
+        totalReviews= result.totalReviews
+        averageRating = result.averageRating
+    }
+    
     return {
         ...campaign,
         totalReviews,
@@ -135,5 +172,6 @@ export async function fetchCampaignById(campaignId: string) {
     }
 
 }
+
 
 export type campaignDetailsType = Prisma.PromiseReturnType<typeof fetchCampaignById>

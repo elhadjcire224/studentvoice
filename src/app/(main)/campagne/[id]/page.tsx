@@ -1,4 +1,4 @@
-import { campaignDetailsType, fetchCampaignById } from '@/db/queries/campagne.query'
+import { campaignDetailsType, fetchCampaignById, unSignaledCritiques } from '@/db/queries/campagne.query'
 import { notFound } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
 import AvatarProf from '../(mainpage)/AvatarProf'
@@ -14,7 +14,7 @@ import prisma from '@/db/prisma'
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import Loader from '@/components/loader'
-type props = PropsWithChildren & {
+type props =  {
     params: {
         id: string
     }
@@ -29,7 +29,7 @@ export default async function Campagne({ params }: props) {
     const session = await getServerSession(options)
     const count = await prisma.critique.count({
         where: {
-            userId: session.user.id,
+            userId: session?.user.id,
             campagneId: campaign.id
         }
     })
@@ -41,20 +41,20 @@ export default async function Campagne({ params }: props) {
                 <div className=' flex items-center gap-2 justify-between '>
                     
                         <BackButton/>
-                        <div>crée le {formatDate(campaign.createdAt)}</div>
+                        <div>crée le {formatDate(campaign.createdAt as Date)}</div>
                     
                 </div>
                 <div className="flex items-center gap-4 ">
                     <div>
                         <AvatarProf
-                            subject={user.subject.name}
-                            name={user.name}
-                            image={user.image}
+                            subject={user?.subject?.name}
+                            name={user?.name as string}
+                            image={user?.image as string}
                         />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <div><strong>Mr/Mdme&nbsp;&nbsp;{campaign.user.name}</strong></div>
-                        <div className="italic font-bold ">Prof de {user.subject.name}</div>
+                        <div><strong>Mr/Mdme&nbsp;&nbsp;{campaign?.user?.name as string}</strong></div>
+                        <div className="italic font-bold ">Prof de {user?.subject?.name as string}</div>
                     </div>
                 </div>
                 <div className='p-3'>
@@ -62,6 +62,7 @@ export default async function Campagne({ params }: props) {
                 </div>
                 <div>
                     <div className="flex  mt-4 justify-between px-4 items-center">
+                        
                         <div className="flex items-end gap-1">
                             <Star className="fill-gold border-none text-gold" />{campaign.averageRating}
                         </div>
@@ -78,7 +79,7 @@ export default async function Campagne({ params }: props) {
             
 
             <Separator />
-            <CritiquesList campaignId={campaign.id}  critiques={critiques} />
+            <CritiquesList campaignId={campaign.id as string}  critiques={critiques as any} />
         </div>
     )
 }
