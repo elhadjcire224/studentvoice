@@ -14,6 +14,7 @@ import prisma from '@/db/prisma'
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import Loader from '@/components/loader'
+import { fetchUserCritiqueNumber } from '@/db/queries/critique.query'
 type props =  {
     params: {
         id: string
@@ -27,12 +28,7 @@ export default async function Campagne({ params }: props) {
     if (!campaign) notFound()
     const { user, critiques } = campaign
     const session = await getServerSession(options)
-    const count = await prisma.critique.count({
-        where: {
-            userId: session?.user.id,
-            campagneId: campaign.id
-        }
-    })
+    const count = await fetchUserCritiqueNumber(campaign.id as string, session?.user.id as string)
     // console.log("morde", likeMoreThanOne)
 
     return (
@@ -79,7 +75,7 @@ export default async function Campagne({ params }: props) {
             
 
             <Separator />
-            <CritiquesList campaignId={campaign.id as string}  critiques={critiques as any} />
+            <CritiquesList campaignUserId={campaign?.user?.id as string}  critiques={critiques as any} />
         </div>
     )
 }

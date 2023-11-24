@@ -20,7 +20,7 @@ export default  function CampaignActions({
 	const user = session.data?.user
 
 	if(!campaign) throw new Error("cannot see campaign details")
-	console.log("campagne actions",user)
+	console.log("campagne actions ",user)
 	const canUserCritique = (user?.role == Role.STUDENT || user?.role == Role.ADMIN) && (campaign.mutiple_critique || morethanOne == 0)
 	console.log(morethanOne)
 	return (

@@ -2,11 +2,18 @@
 import prisma from '@/db/prisma';
 import { createCritiqueFormType } from '@/lib/definitions';
 import { unstable_noStore as noStore } from 'next/cache'
+import { fetchCampaignById } from './campagne.query';
 
 
 // Fonction principale pour récupérer les campagnes avec les informations sur les critiques
 export async function createCritique(data: createCritiqueFormType, campaignId: string, userId: string) {
     noStore();
+    const count = await fetchUserCritiqueNumber(campaignId,userId)
+    const campaign = await fetchCampaignById(campaignId)
+
+    if(campaign && !(campaign.mutiple_critique || count == 0)){
+        return {success:false,message:"vous n'etes pas autorise a critique plus d'une fois"}
+    }
     const critique = await prisma.critique.create({
         data: {
             ...data,
@@ -17,6 +24,15 @@ export async function createCritique(data: createCritiqueFormType, campaignId: s
 
 
     return { success: true, message: "critique ajouté avec success" }
+}
+
+export async function fetchUserCritiqueNumber(campagneId:string,userId:string){
+    return await prisma.critique.count({
+        where: {
+            userId,
+            campagneId
+        }
+    })
 }
 export async function deleteCritique(critiqueId: string) {
     noStore();

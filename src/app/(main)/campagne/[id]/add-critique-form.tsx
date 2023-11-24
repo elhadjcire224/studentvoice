@@ -49,6 +49,8 @@ export default function CreateCritiqueForm({ closeDialog, campaignId }: Props) {
         }
         else {
             toast.error(result.message)
+            closeDialog(false)
+            router.refresh()
         }
         form.reset()
 

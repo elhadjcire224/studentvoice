@@ -89,7 +89,8 @@ export async function fetchUnsignaledCritiques(campaingId:string) {
             rate: true,
             content: true,
             signaled: true,
-            id: true
+            id: true,
+            userId:true
         }
     })
 }
@@ -134,6 +135,7 @@ export async function fetchCampaignById(campaignId: string) {
                 },
 
                 select: {
+                    
                     _count: {
                         select: {
                             likes: true
@@ -144,7 +146,8 @@ export async function fetchCampaignById(campaignId: string) {
                     rate:true,
                     content:true,
                     signaled:true,
-                    id:true
+                    id:true,
+                    userId:true
 
                 
 

@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import Script from "next/script";
 import { getServerSession } from "next-auth";
 import AuthProvider from "@/lib/session-provider";
+import { options } from "./api/auth/[...nextauth]/options";
 
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["100","300" ,"400" ,"500" ,"700" ,"900"]});
@@ -25,7 +26,7 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	const session = await getServerSession()
+	const session = await getServerSession(options)
 	return (
 		<html lang="fr" className="h-full flex flex-col items-center">
 			<body className={cn(roboto.className, "bg-backgroun w-full max-w-lg mx-auto relative", 'h-full')}>

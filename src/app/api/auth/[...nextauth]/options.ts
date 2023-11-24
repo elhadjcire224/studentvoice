@@ -41,22 +41,22 @@ export const options : AuthOptions = {
         async jwt({token,user}) {
 
             
-            // console.error("jwt callback", user, token)
             if(user){
-                return {
+                token = {
                     ...token ,
                     id:user.id,
                     role:user.role,
                     subject:user?.subject?.name
                 }
             }
-
+            
+            console.log("jwt appele avec =", token)
             return token
         },
         async session({session,user,token}){
             
             // console.warn("session callback" ,session,"user=",user,"token=",token)
-            return {
+            const sessiondata =  {
                 ...session,
                 user:{
                     ...session.user,
@@ -65,6 +65,10 @@ export const options : AuthOptions = {
                     subject:token.subject
                 }
             }
+
+            console.log("session appele avec =",sessiondata)
+
+            return sessiondata
         }
     },
     session: {

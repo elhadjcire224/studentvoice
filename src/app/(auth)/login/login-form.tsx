@@ -33,7 +33,6 @@ export default function StudentRegisterForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: loginFormType) {
-        form.reset()
         const r = await signIn("credentials", { ...values, redirect: false },)
         console.log(r)
         if (!r?.error) {
@@ -47,6 +46,8 @@ export default function StudentRegisterForm() {
         }else if(r?.error){
             toast.error(r?.error as string, { duration: 5000 })
         }
+        form.reset()
+        
     }
     return (
         <Form  {...form}>

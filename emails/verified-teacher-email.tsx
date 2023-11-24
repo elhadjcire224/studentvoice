@@ -43,7 +43,7 @@ const VerifiedTeacherEmail = ({name}: KoalaWelcomeEmailProps) => (
                 </Text>
                 <Section style={btnContainer}>
                     <Button  style={button} href="https://studentvoice.vercel.app/campagne">
-                        Commencer
+                        Creer votre premier campagne
                     </Button>
                 </Section>
                 <Text style={paragraph}>
