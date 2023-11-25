@@ -24,7 +24,7 @@ export default function CritiqueButtonActions({
 	const session = useSession();
 	const router = useRouter();
 	console.log("critique user actions=", session?.data?.user);
-	console.log("critique campaignId actions=", campaignUserId);
+	console.log("critique campaignUserId actions=", campaignUserId);
 	console.log("critique critique actions=", critique);
 	return (
 		<DropdownMenu>

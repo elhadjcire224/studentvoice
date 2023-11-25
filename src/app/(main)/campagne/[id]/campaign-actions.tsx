@@ -7,6 +7,7 @@ import UpdateCampaignButton from "./update-campagne-button";
 import { Role } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { PenSquare } from "lucide-react";
 
 
 export default  function CampaignActions({
@@ -33,7 +34,7 @@ export default  function CampaignActions({
 								? (
 									<UpdateCampaignButton campaign={campaign} />
 								)
-								:canUserCritique ?<AddCritiqueButton campaignId={campaign.id as string}/> : <Button size={"sm"} className="bg-gold capitalize" disabled>Critiquer</Button>
+								:canUserCritique ?<AddCritiqueButton campaignId={campaign.id as string}/> : <Button size={"sm"} className="bg-gold capitalize" disabled><PenSquare/>  Critiquer</Button>
 						}
 
 					</>
