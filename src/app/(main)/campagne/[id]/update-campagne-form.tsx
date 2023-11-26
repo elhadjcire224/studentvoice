@@ -37,8 +37,7 @@ export default function UpdateCampaignForm({ campaign, closeDialog }: Props) {
 
 
     async function onSubmit(values: createCampaignFormType) {
-        form.reset()
-
+        
         const result = await updateCampaign(values, campaign.id)
         if (result.success) {
             toast.success(result.message)
@@ -49,6 +48,7 @@ export default function UpdateCampaignForm({ campaign, closeDialog }: Props) {
         else {
             toast.error(result.message)
         }
+        form.reset()
 
     }
 
@@ -56,7 +56,7 @@ export default function UpdateCampaignForm({ campaign, closeDialog }: Props) {
 
     return (
         <Form  {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 p-1 w-full ">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 p-1 w-full  ">
                 <FormField
 
                     control={form.control}

@@ -9,14 +9,8 @@ import { useEffect, useState } from "react";
 export default  function  LikeButton({isLiked,critiqueId,count}:{critiqueId:string,isLiked:boolean,count:number}) {
     const session = useSession()
     const user = session.data?.user
-    console.log(`initial data count ${count} et isLiked =${isLiked}`)
-    const [liked, setLiked] = useState({ count, isLiked })
-
-    useEffect(() => {
-        setLiked({count:liked.count,isLiked:liked.isLiked})
-        console.log('use effect =',liked)
-
-    },[])
+    const [liked, setLiked] = useState(isLiked)
+    const [number, setNumber] = useState(count)
 
 
     if(user == undefined) throw new Error('user not exist on like button')
@@ -24,16 +18,13 @@ export default  function  LikeButton({isLiked,critiqueId,count}:{critiqueId:stri
     return (
         <Button className=" gap-1 flex items-center" size={'sm'} variant={"ghost"} onClick={async ()=>{
             
-            const prevState = {...liked}
-
-            console.log('clicked prev data =',prevState)
-            setLiked((prev => {
-                return {count:!prev.isLiked ? prev.count++: prev.count--,isLiked:!prev.isLiked}
-            }))
+            setNumber(prev => liked ? prev-1 : prev+1 )
+            setLiked(!liked)
             const result = await toggleLikeCritique(critiqueId,user.id as string)
             if(result.type == 'unliked') {
-                setLiked({...prevState})
+                setNumber(prev => liked ? prev+1 : prev-1 )
+                setLiked(!liked)
             }
-        }}><ThumbsUp className={cn(liked.isLiked && "text-gold")} />{liked.count}</Button>
+        }}><ThumbsUp className={cn(liked && "text-gold")} />{number}</Button>
     )
 }
