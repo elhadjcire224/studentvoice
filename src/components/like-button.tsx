@@ -14,7 +14,7 @@ export default  function LikeButton({isLiked,critiqueId,count}:{critiqueId:strin
 
     useEffect(() => {
         setLiked({count,isLiked})
-    },[])
+    },[count,isLiked])
 
 
     if(user == undefined) throw new Error('user not exist on like button')
