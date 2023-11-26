@@ -27,7 +27,7 @@ export default async function CritiqueCard({critique,campaignUserId}:{critique:u
                 {critique.content}
             </CardContent>
             <CardFooter className="p-2 flex items-center justify-between">
-                <div className="flex items-center"><LikeButton isLiked={isLiked} critiqueId={critique.id} />{critique._count.likes as any}</div>
+                <LikeButton count={critique._count.likes} isLiked={isLiked} critiqueId={critique.id} />
                 {critique.signaled && <SignaledCritique/>}
                 <RatingStars maxWidth={80} readonly defaultValue={critique.rate}/>
 

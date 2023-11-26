@@ -92,7 +92,7 @@ export async function toggleLikeCritique(critiqueId: string, userId?: string) {
             },
         });
 
-        return { success: true, message: "Like supprimé avec succès" };
+        return { success: true, type:'like' };
     } else {
         // Si l'utilisateur n'a pas encore aimé la critique, ajoutez un "like"
         await prisma.like.create({
@@ -102,6 +102,6 @@ export async function toggleLikeCritique(critiqueId: string, userId?: string) {
             }
         });
 
-        return { success: true, message: "Like ajouté avec succès" };
+        return { success: true, type:'unlike' };
     }
 }
