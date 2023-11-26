@@ -83,7 +83,7 @@ export async function toggleLikeCritique(critiqueId: string, userId?: string) {
     noStore()
     if (!userId) throw new Error("userId is null")
     const isLiked = await existingLike(critiqueId, userId)
-
+    console.log('toogle critique called')
     if (isLiked) {
         // Si l'utilisateur a déjà aimé la critique, supprimez le "like"
         await prisma.like.delete({
