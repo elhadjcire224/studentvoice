@@ -79,6 +79,7 @@ export async function fetchUnsignaledCritiques(campaingId:string) {
         },
 
         select: {
+            user:true,
             _count: {
                 select: {
                     likes: true
@@ -125,22 +126,18 @@ export async function fetchCampaignById(campaignId: string) {
                 }
             },
             critiques: {
-                where: {
-                    signaled: {
-                        equals: false
-                    }
-                },
                 orderBy: {
                     updatedAt: "desc"
                 },
 
                 select: {
-                    
+                    user:true,
                     _count: {
                         select: {
                             likes: true
                         }
                     },
+                    
 
                     updatedAt:true,
                     rate:true,

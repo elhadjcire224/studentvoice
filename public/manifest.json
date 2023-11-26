@@ -1,7 +1,6 @@
 {
     "theme_color": "#ffbe32",
     "background_color": "#020817",
-    "display": "fullscreen",
     "scope": "/",
     "start_url": "/",
     "name": "StudentVoice",

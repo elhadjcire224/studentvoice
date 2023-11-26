@@ -15,6 +15,7 @@ import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import Loader from '@/components/loader'
 import { fetchUserCritiqueNumber } from '@/db/queries/critique.query'
+import { resolve } from 'path'
 type props =  {
     params: {
         id: string
@@ -24,6 +25,11 @@ export default async function Campagne({ params }: props) {
     const campaign = await fetchCampaignById(params.id)
 
     // console.log(campaign, params.id)
+    // const p = new Promise((resolve) => {
+    //     setTimeout(()=>{resolve(true)},10000)
+    // })
+
+    // await p
     
     if (!campaign) notFound()
     const { user, critiques } = campaign
