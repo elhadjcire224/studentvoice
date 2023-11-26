@@ -12,20 +12,17 @@ type Props = {
 	campaignUserId: string;
 };
 export default async function CritiquesList({ critiques, campaignUserId }: Props) {
+  console.log("critques in list",typeof critiques)
   const session = await getServerSession(options)
 
-  // const CritiqueUserList =  critiques.filter((critique) =>  critique.signaled && (critique.userId == user?.id || user?.role == Role.ADMIN ))
+  const user = session?.user
+  // const CritiqueUserList =  critiques.filter((critique) =>  )
 	return (
 		<section className="flex flex-col gap-2 mt-3 ">
 			<div className="text-2xl font-extrabold">Critiques</div>
 			<div className="flex flex-col gap-3">
-        {critiques.map((critique) => (
-					<CritiqueCard
-						campaignUserId={campaignUserId}
-						critique={critique}
-						key={critique.id}
-					/>
-				))}
+				{critiques.map((critique) => critique.signaled ? (critique.userId == user?.id || user?.role == Role.ADMIN) && <CritiqueCard campaignUserId={campaignUserId} critique={critique} key={critique.id} /> : <CritiqueCard	campaignUserId={campaignUserId} critique={critique} key={critique.id}/> 
+				)}
 			</div>
 		</section>
 	);
