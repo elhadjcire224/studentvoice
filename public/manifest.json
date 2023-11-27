@@ -3,6 +3,7 @@
     "background_color": "#020817",
     "scope": "/",
     "start_url": "/",
+    "display":"fullscreen",
     "name": "StudentVoice",
     "short_name": "StudentVoice",
     "icons": [
