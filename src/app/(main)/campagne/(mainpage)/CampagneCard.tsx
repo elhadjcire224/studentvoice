@@ -15,12 +15,11 @@ import {  buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { routes } from "@/lib/routes";
 type Props = {
-    campaign: CampaignHome;
+    campaign: any;
 };
 
 export default function CampagneCard({ campaign }: Props) {
     const session = useSession()
-    const user = session.data?.user
     return (
         <>
             <Separator />

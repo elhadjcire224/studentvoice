@@ -175,3 +175,46 @@ export async function fetchCampaignById(campaignId: string) {
 
 
 export type campaignDetailsType = Prisma.PromiseReturnType<typeof fetchCampaignById>
+
+export async function fetchCampaignsByUserId(userId:string){
+    const campaigns = await prisma.campagne.findMany({
+        where:{
+            userId
+        },
+        include:{
+            critiques: {
+                where: {
+                    signaled: {
+                        equals: false
+                    }
+                },
+                select: {
+                    rate: true,
+                },
+            },
+            user:{
+                select:{
+                    id:true,
+                    image:true,
+                    name:true,
+                    subject:{
+                        select:{
+                            name:true
+                        }
+                    }
+                }
+            }
+            
+        }
+
+    })
+    return campaigns.map(campaign => {
+        const { totalReviews, averageRating } = calculateRatingInfo(campaign.critiques);
+
+        return {
+            ...campaign,
+            averageRating,
+            totalReviews,
+        };
+    });
+}

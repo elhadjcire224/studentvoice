@@ -1,7 +1,7 @@
 import prisma from '@/db/prisma';
 import { unstable_noStore as noStore } from 'next/cache'
-import {Resend} from 'resend'
-import {render} from '@react-email/render'
+import { Resend } from 'resend'
+import { render } from '@react-email/render'
 import VerifiedTeacherEmail from '../../../emails/verified-teacher-email'
 import { Prisma, User } from '@prisma/client';
 export async function getUserByEmail(email: string) {
@@ -10,10 +10,10 @@ export async function getUserByEmail(email: string) {
         where: {
             email: email
         },
-        include:{
-            subject:{
-                select:{
-                    name:true
+        include: {
+            subject: {
+                select: {
+                    name: true
                 }
             }
         }
@@ -25,21 +25,21 @@ export async function verifyUser(userId: string) {
     noStore()
     const user = await prisma.user.update({
         where: {
-            id:userId
+            id: userId
         },
-        data:{
-            verified:true
+        data: {
+            verified: true
         }
     })
 
     return user
 }
 
-export async function emailVeriedUser(user:any){
+export async function emailVeriedUser(user: any) {
 
     const name = user.name
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const html = render(VerifiedTeacherEmail({name}))
+    const html = render(VerifiedTeacherEmail({ name }))
 
     const data = await resend.emails.send({
         from: 'StudentVoice <onboarding@resend.dev>',
@@ -48,39 +48,38 @@ export async function emailVeriedUser(user:any){
         html
     });
 
-    return {sucess:true,data:data}
+    return { sucess: true, data: data }
 }
 
-export default async function fectchTeacherStatsDetails(userId:string){
+export default async function fectchTeacherStatsDetails(userId: string) {
     const details = await prisma.user.findUnique({
-        where:{
-            id:userId
+        where: {
+            id: userId
         },
-        include:{
-            subject:{
-                select:{
-                    name:true
+        include: {
+            subject: {
+                select: {
+                    name: true
                 }
             },
-            campagnes:{
-                select:{
-                    _count:true,
-                    closed:true,
+            campagnes: {
+                select: {
+                    _count: true,
+                    closed: true,
                     critiques: {
                         where: {
                             signaled: false
                         },
                         select: {
-                            rate:true
+                            rate: true
                         }
                     }
                 }
             },
         }
-        
+
     })
     const critiques = details?.campagnes.map((camp) => camp.critiques).flat() as Array<any>
-
     const totalReviews = critiques.flat().length
     const totalRating = critiques.reduce((acc: number, critique) => acc + critique.rate, 0) ?? 0
     const averageRating = totalReviews > 0 ? (totalRating / totalReviews).toFixed(1) : '0.1';
@@ -92,5 +91,54 @@ export default async function fectchTeacherStatsDetails(userId:string){
         closed
     }
 }
-
 export type teacherProfileDetailsType = Prisma.PromiseReturnType<typeof fectchTeacherStatsDetails>
+
+export async function fetchStudentStatsDetails(userId: string) {
+
+    const critiques = await prisma.critique.findMany({
+        where: {
+            userId
+        },
+
+    })
+
+    const total = critiques.length
+
+    const signaled = critiques.filter((critique) => critique.signaled).length
+    return {
+        signaled,
+        total
+    }
+}
+
+export async function fetchCritiquesByUserId(userId: string) {
+    return await prisma.critique.findMany({
+        where: {
+            userId
+        },
+        orderBy: {
+            updatedAt: 'desc'
+        },
+        select: {
+            user: true,
+            _count: {
+                select: {
+                    likes: true
+                }
+            },
+            updatedAt: true,
+            rate: true,
+            content: true,
+            signaled: true,
+            id: true,
+            userId: true,
+            campagne: {
+                select: {
+                    userId: true
+                }
+            }
+        }
+    })
+
+
+}
