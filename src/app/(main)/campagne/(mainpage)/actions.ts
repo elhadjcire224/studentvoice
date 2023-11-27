@@ -2,6 +2,8 @@
 
 import prisma from "@/db/prisma";
 import { createCampaignFormType } from "@/lib/definitions"
+import { routes } from "@/lib/routes";
+import { revalidatePath } from "next/cache";
 
 export const createCampagne =  async (values:createCampaignFormType,userId:string) =>{
     try {
@@ -12,6 +14,7 @@ export const createCampagne =  async (values:createCampaignFormType,userId:strin
                 mutiple_critique:values.onemore // Vous pouvez définir le statut initial ici
             },
         });
+        revalidatePath(routes.CAMPAGNE)
         return campaign ? { success: true, message: "campagne crée avec success" } : { success: false, message: "impossible de creer une campagne" }
     } catch (error) {
         console.error('Error creating campagne:', error);
@@ -29,6 +32,7 @@ export const stopCampaign = async (campaignId:string) => {
                 closed:true
             }
         })
+        revalidatePath(routes.CAMPAGNE)
         return campaign ? { success: true, message: "campagne fermée avec success" } : { success: false, message: "impossible de fermer la campagne" }
     }catch(e){
         console.error('Error closing campagne:', e);
@@ -43,6 +47,7 @@ export const deleteCampaign = async (campaignId:string) => {
                 id:campaignId
             }
         })
+        revalidatePath(routes.CAMPAGNE)
         return campaign && { success: true, message: "campagne supprimer avec success" } 
     }catch(e){
         console.error('Error deleting campagne:', e);
@@ -52,15 +57,16 @@ export const deleteCampaign = async (campaignId:string) => {
 
 export const updateCampaign = async (data:createCampaignFormType,campaignId:string) => {
     
-        const campaign = await prisma.campagne.update({
-            where:{
-                id:campaignId
-            },
-            data:{
-                title:data.title,
+    const campaign = await prisma.campagne.update({
+        where:{
+            id:campaignId
+        },
+        data:{
+            title:data.title,
                 mutiple_critique:data.onemore
             }
         })
+        revalidatePath(routes.CAMPAGNE)
         return campaign && { success: true, message: "campagne mis a jour avec success" } 
     
 }

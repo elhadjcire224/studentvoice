@@ -26,7 +26,6 @@ export default function CreateCampaignForm({closeDialog}:Props) {
 
     })
     const session = useSession()
-    const router  = useRouter()
     if (!session?.data?.user) return
 
     const user = session.data.user
@@ -40,7 +39,6 @@ export default function CreateCampaignForm({closeDialog}:Props) {
         const result = await createCampagne(values, user.id as string)
         if (result.success) {
             toast.success(result.message)
-            router.refresh()
             closeDialog(false)
             return
         }

@@ -8,9 +8,6 @@ export default async function verifyTeacher(userId:string){
     
     if(user){
         const data = await emailVeriedUser(user)
-
-        console.log(data.data)
-
     }
     
     return {success:true,}

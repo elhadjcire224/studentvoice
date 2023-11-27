@@ -6,15 +6,11 @@ import { CreateCampaignFormSchema, CreateCritiqueFormSchema, createCampaignFormT
 import { useSession } from "next-auth/react"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Switch } from "@/components/ui/switch"
 import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
 import { Dispatch, SetStateAction } from "react"
 import { createCritique } from "@/db/queries/critique.query"
 import RatingStars from "./rating"
 import { Textarea } from "@/components/ui/textarea"
-import { FileSymlink, Files } from "lucide-react"
 import Loader from "@/components/loader"
 type Props = {
     closeDialog: Dispatch<SetStateAction<boolean>>,
@@ -30,7 +26,6 @@ export default function CreateCritiqueForm({ closeDialog, campaignId }: Props) {
 
     })
     const session = useSession()
-    const router = useRouter()
     if (!session?.data?.user) return
 
     const user = session.data.user
@@ -43,20 +38,16 @@ export default function CreateCritiqueForm({ closeDialog, campaignId }: Props) {
         const result = await createCritique(values,campaignId, user.id as string)
         if (result.success) {
             closeDialog(false)
-            router.refresh()
             toast.success(result.message)
             return
         }
         else {
             toast.error(result.message)
             closeDialog(false)
-            router.refresh()
         }
         form.reset()
 
     }
-
-
 
     return (
         <Form  {...form}>

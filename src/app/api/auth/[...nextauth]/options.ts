@@ -24,7 +24,7 @@ export const options : AuthOptions = {
 
                 const user = await getUserByEmail(credentials.email);
                 
-                console.log(user)
+                // console.log(user)
                 if (!user) return null
 
                 const passwordMatch = await compare(credentials.password, user.password);
@@ -50,7 +50,7 @@ export const options : AuthOptions = {
                 }
             }
             
-            console.log("jwt appele avec =", token)
+            // console.log("jwt appele avec =", token)
             return token
         },
         async session({session,user,token}){
@@ -66,7 +66,7 @@ export const options : AuthOptions = {
                 }
             }
 
-            console.log("session appele avec =",sessiondata)
+            // console.log("session appele avec =",sessiondata)
 
             return sessiondata
         }

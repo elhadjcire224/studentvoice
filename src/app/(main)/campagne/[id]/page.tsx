@@ -10,12 +10,9 @@ import { Separator } from '@/components/ui/separator'
 import CritiquesList from './critiques-list'
 import CampaignActions from './campaign-actions'
 import BackButton from '@/components/back-button'
-import prisma from '@/db/prisma'
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
-import Loader from '@/components/loader'
 import { fetchUserCritiqueNumber } from '@/db/queries/critique.query'
-import { resolve } from 'path'
 type props =  {
     params: {
         id: string
@@ -35,7 +32,6 @@ export default async function Campagne({ params }: props) {
     const { user, critiques } = campaign
     const session = await getServerSession(options)
     const count = await fetchUserCritiqueNumber(campaign.id as string, session?.user.id as string)
-    // console.log("morde", likeMoreThanOne)
 
     return (
         <div className=' p-4 '>

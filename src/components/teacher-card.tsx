@@ -37,7 +37,6 @@ export default function TeacherCard({user}:{user:any}) {
                     if(data?.success){
                         router.refresh()
                         toast.success("success")
-                        console.log(data)
                     }
                 }}>Verify </Button>
 			</div>

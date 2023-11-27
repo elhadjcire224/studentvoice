@@ -34,9 +34,9 @@ export default function StudentRegisterForm() {
     // 2. Define a submit handler.
     async function onSubmit(values: loginFormType) {
         const r = await signIn("credentials", { ...values, redirect: false },)
-        console.log(r)
+        
         if (!r?.error) {
-            console.log("no error")
+            
             router.refresh()
             return
         } else if (r?.error == "CredentialsSignin") {

@@ -5,7 +5,6 @@ import '@smastrom/react-rating/style.css'
 const RatingStars = ({defaultValue, setter,readonly,maxWidth}:{defaultValue:any,setter?:any,readonly?:boolean,maxWidth?:number}) => {
     const handleRatingChange = (value:number) => {
         setter(value);
-        console.log(value)
     };
 
     return (

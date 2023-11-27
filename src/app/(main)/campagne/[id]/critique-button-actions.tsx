@@ -23,9 +23,6 @@ export default function CritiqueButtonActions({
 }) {
 	const session = useSession();
 	const router = useRouter();
-	console.log("critique user actions=", session?.data?.user);
-	console.log("critique campaignUserId actions=", campaignUserId);
-	console.log("critique critique actions=", critique);
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -33,29 +30,29 @@ export default function CritiqueButtonActions({
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				{(critique.userId == session.data?.user?.id
-                 || session.data?.user.role == Role.ADMIN) && (
-					<>
-						<DropdownMenuItem
-							className="bg-red-400"
-							onClick={async () => {
-								const result = await deleteCritique(
-									critique.id
-								);
-								if (result.success) {
-									router.refresh();
-									toast.success(result.message);
-									return;
-								} else {
-									toast.error(result.message);
-								}
-							}}
-						>
-							<Trash2 />
-							Supprimer
-						</DropdownMenuItem>
-						<DropdownMenuSeparator />
-					</>
-				)}
+					|| session.data?.user.role == Role.ADMIN) && (
+						<>
+							<DropdownMenuItem
+								className="bg-red-400"
+								onClick={async () => {
+									const result = await deleteCritique(
+										critique.id
+									);
+									if (result.success) {
+										router.refresh();
+										toast.success(result.message);
+										return;
+									} else {
+										toast.error(result.message);
+									}
+								}}
+							>
+								<Trash2 />
+								Supprimer
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+						</>
+					)}
 
 				{session.data?.user.role == Role.TEACHER &&
 					session.data.user.id == campaignUserId && (

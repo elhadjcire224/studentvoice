@@ -5,7 +5,7 @@ import { unstable_noStore as noStore } from 'next/cache'
 // Fonction qui calcule le nombre de critiques et la moyenne
 function calculateRatingInfo(critiques: any) {
 
-    console.log(critiques)
+    // console.log(critiques)
     const totalReviews = critiques.length;
     const totalRating = critiques ? critiques.reduce((acc:number, critique:any) => acc + critique.rate, 0) : 0;
     const averageRating = totalReviews > 0 ? (totalRating / totalReviews).toFixed(1) : '0.0';

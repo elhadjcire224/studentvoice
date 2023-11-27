@@ -12,7 +12,6 @@ type Props = {
 	campaignUserId: string;
 };
 export default async function CritiquesList({ critiques, campaignUserId }: Props) {
-  console.log("critques in list",typeof critiques)
   const session = await getServerSession(options)
 
   const user = session?.user
