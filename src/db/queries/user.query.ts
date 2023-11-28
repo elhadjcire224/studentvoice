@@ -1,9 +1,9 @@
 import prisma from '@/db/prisma';
 import { unstable_noStore as noStore } from 'next/cache'
-import { Resend } from 'resend'
 import { render } from '@react-email/render'
 import VerifiedTeacherEmail from '../../../emails/verified-teacher-email'
 import { Prisma, User } from '@prisma/client';
+import { transporter } from '@/lib/transporter';
 export async function getUserByEmail(email: string) {
     noStore()
     const user = await prisma.user.findUnique({
@@ -38,17 +38,31 @@ export async function verifyUser(userId: string) {
 export async function emailVeriedUser(user: any) {
 
     const name = user.name
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    // const resend = new Resend(process.env.RESEND_API_KEY);
     const html = render(VerifiedTeacherEmail({ name }))
 
-    const data = await resend.emails.send({
-        from: 'StudentVoice <onboarding@resend.dev>',
-        to: [user.email as string],
-        subject: 'Compte verifié',
-        html
-    });
+    // const data = await resend.emails.send({
+    //     from: 'StudentVoice <onboarding@resend.dev>',
+    //     to: [user.email as string],
+    //     subject: 'Compte verifié',
+    //     html
+    // });
 
-    return { sucess: true, data: data }
+    try{
+        await transporter.sendMail({
+            subject:'Compte verifié',
+            sender:'StudentVoice',
+            to:user.email,
+            html
+        })
+    }catch(error){
+        console.log(error)
+        throw new Error(`impossible de d'envoyer le verified mal a ${user.name}`)
+    }
+
+
+
+    return { sucess: true}
 }
 
 export default async function fectchTeacherStatsDetails(userId: string) {
