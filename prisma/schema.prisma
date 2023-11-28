@@ -47,25 +47,26 @@ model VerificationToken {
 // application database
 
 model User {
-    id            String     @id @default(cuid())
-    name          String
-    email         String?    @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    password      String
-    verified      Boolean    @default(false)
-    banned        Boolean    @default(false)
-    role          Role       @default(STUDENT)
-    ip            String?
-    createdAt     DateTime   @default(now())
-    updatedAt     DateTime   @updatedAt
-    subjectId     String?
-    subject       Subject?   @relation(fields: [subjectId], references: [id], onDelete: NoAction)
-    campagnes     Campagne[]
-    likes         Like[]
-    critiques     Critique[]
+    id              String     @id @default(cuid())
+    name            String
+    email           String?    @unique
+    emailVerified   DateTime?
+    image           String?
+    image_public_id String?   
+    accounts        Account[]
+    sessions        Session[]
+    password        String
+    verified        Boolean    @default(false)
+    banned          Boolean    @default(false)
+    role            Role       @default(STUDENT)
+    ip              String?
+    createdAt       DateTime   @default(now())
+    updatedAt       DateTime   @updatedAt
+    subjectId       String?
+    subject         Subject?   @relation(fields: [subjectId], references: [id], onDelete: NoAction)
+    campagnes       Campagne[]
+    likes           Like[]
+    critiques       Critique[]
 }
 
 enum Role {
@@ -102,7 +103,7 @@ model Critique {
 }
 
 model Like {
-    id         String   @id @default(cuid()) 
+    id         String   @id @default(cuid())
     userId     String
     critiqueId String
     updatedAt  DateTime @updatedAt

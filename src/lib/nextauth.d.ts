@@ -9,12 +9,14 @@ declare module 'next-auth'{
             role?:Role,
             blocked?:boolean,
             subject?:string,
+            image_public_id?:any
         }
     }
 
     interface User extends DefaultUser {
         role?:Role
         subject?:any
-        id?:string
+        id?: string,
+        image_public_id?: any
     }
 }

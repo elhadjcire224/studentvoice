@@ -46,7 +46,8 @@ export const options : AuthOptions = {
                     ...token ,
                     id:user.id,
                     role:user.role,
-                    subject:user?.subject?.name
+                    subject:user?.subject?.name,
+                    image_public_id: user?.image_public_id
                 }
             }
             
@@ -62,7 +63,8 @@ export const options : AuthOptions = {
                     ...session.user,
                     id:token.id,
                     role:token.role,
-                    subject:token.subject
+                    subject:token.subject,
+                    public_id:token.public_id
                 }
             }
 
