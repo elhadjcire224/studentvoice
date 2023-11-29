@@ -11,7 +11,8 @@ import CritiqueList from "./user-critique-list";
 import UserNames from "./user-names";
 import { Button } from "@/components/ui/button";
 import { PenLine } from "lucide-react";
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from "@/components/ui/alert-dialog";
+
 
 
 export default async function page() {
@@ -31,6 +32,13 @@ export default async function page() {
                     <AlertDialogTrigger>
                         <Button size={"sm"} variant={"destructive"}>Supprimer mon compte</Button>
                     </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        voulez vous vraiment suprimer , cet action est irreversible
+                        <AlertDialogFooter className="flex  flex-row justify-end gap-2 items-center ">
+                            <AlertDialogCancel >non</AlertDialogCancel>
+                            <AlertDialogAction>oui</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
                 </AlertDialog>
             </div>
             <div>
