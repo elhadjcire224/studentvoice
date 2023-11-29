@@ -1,3 +1,4 @@
+'use client'
 import LikeButton from "@/components/like-button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import Time from "../(mainpage)/time";
@@ -11,15 +12,16 @@ import { cn } from "@/lib/utils";
 import UserCritiqueAvatar from "@/components/userCritiqueAvatar";
 import { Role } from "@prisma/client";
 import SignaledCritique from "@/components/signaledCritique";
+import { useSession } from "next-auth/react";
 
 
-export default async function CritiqueCard({critique,campaignUserId}:{critique:unSignaledCritiques,campaignUserId:string}) {
-    const session = await getServerSession(options)
-    const isLiked =!! await existingLike(critique.id,session?.user?.id as string)
+export default function CritiqueCard({ critique, campaignUserId }: { critique: unSignaledCritiques, campaignUserId: string }) {
+    const { data: session } = useSession()
+    console.log(session)
     return (
         <Card className={cn(critique.signaled && "border-red-500")}>
-            <CardHeader className={cn("pt-2 text-sm flex flex-row gap-4 justify-end  items-center",session?.user.role == Role.ADMIN && "justify-between")}>
-                {session?.user.role == Role.ADMIN && <UserCritiqueAvatar user={critique.user}/>}
+            <CardHeader className={cn("pt-2 text-sm flex flex-row gap-4 justify-end  items-center", session?.user.role == Role.ADMIN && "justify-between")}>
+                {session?.user.role == Role.ADMIN && <UserCritiqueAvatar />}
                 <div className="flex flex-row gap-4 justify-end items-center"><Time updatedAt={critique.updatedAt} />
                     <CritiqueButtonActions campaignUserId={campaignUserId} critique={critique} /></div>
             </CardHeader>
@@ -27,9 +29,9 @@ export default async function CritiqueCard({critique,campaignUserId}:{critique:u
                 {critique.content}
             </CardContent>
             <CardFooter className="p-2 flex items-center justify-between">
-                <LikeButton count={critique._count.likes} isLiked={isLiked} critiqueId={critique.id} />
-                {critique.signaled && <SignaledCritique/>}
-                <RatingStars maxWidth={80} readonly defaultValue={critique.rate}/>
+                <LikeButton count={critique._count.likes} critiqueId={critique.id} />
+                {critique.signaled && <SignaledCritique />}
+                <RatingStars maxWidth={80} readonly defaultValue={critique.rate} />
 
             </CardFooter>
         </Card>

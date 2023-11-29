@@ -5,12 +5,14 @@ import { Button } from "./ui/button";
 import verifyTeacher from "@/app/(main)/admin/verify-action";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 
 
-export default function TeacherCard({user}:{user:any}) {
-    const router = useRouter()
-	
+export default function TeacherCard() {
+	const router = useRouter()
+	const session = useSession()
+	const user = session.data?.user as any
 	return (
 		<div className="details p-4 flex flex-col gap-4 ">
 			<div className="flex items-center gap-4 ">
@@ -30,15 +32,16 @@ export default function TeacherCard({user}:{user:any}) {
 					</div>
 				</div>
 			</div>
-			
+
 			<div className="text-end">
 				<Button onClick={async () => {
-                    const data = await verifyTeacher(user.id)
-                    if(data?.success){
-                        router.refresh()
-                        toast.success("success")
-                    }
-                }}>Verify </Button>
+					const data = await verifyTeacher(user.id)
+					if (data?.success) {
+						router.refresh()
+						toast.success("success")
+
+					}
+				}}>Verify </Button>
 			</div>
 		</div>
 	);

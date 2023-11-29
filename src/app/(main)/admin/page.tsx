@@ -4,11 +4,11 @@ import prisma from "@/db/prisma"
 
 export default async function Page() {
   const unverifiedTeachers = await prisma.user.findMany({
-    where:{
-      verified:false,
-      role:'TEACHER'
+    where: {
+      verified: false,
+      role: 'TEACHER'
     },
-    include:{subject:true}
+    include: { subject: true }
   })
   return (
     <section className="flex flex-col gap-4 ">
@@ -16,8 +16,8 @@ export default async function Page() {
         Unverified Teachers
       </div>
       <div>
-        <Separator/>
-        {unverifiedTeachers.map((user) => <TeacherCard key={user.id} user={user} />)}
+        <Separator />
+        {unverifiedTeachers.map((user) => <TeacherCard key={user.id} />)}
       </div>
     </section>
   )

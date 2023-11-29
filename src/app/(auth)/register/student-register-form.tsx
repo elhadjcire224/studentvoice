@@ -35,7 +35,6 @@ export default function StudentRegisterForm() {
     async function onSubmit(values: studentFormType) {
 
         const response = await registerStudent(values)
-        form.reset()
         if (response.success) {
             toast.success("votre compte est enregister avec succees")
             router.refresh()
@@ -45,6 +44,7 @@ export default function StudentRegisterForm() {
 
         form.setError("email", { type: "custom", message: response.message })
         toast.error(response.message, { duration: 5000 })
+        form.reset()
     }
     return (
 
@@ -58,7 +58,7 @@ export default function StudentRegisterForm() {
                         <FormItem>
                             <FormLabel>Nom d&lsquo;utilisateur</FormLabel>
                             <FormControl>
-                                <Input type="text"  required placeholder="shadcn" {...field} />
+                                <Input type="text" required placeholder="shadcn" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -102,7 +102,7 @@ export default function StudentRegisterForm() {
                         </FormItem>
                     )}
                 />
-                <Button disabled={form.formState.isSubmitting} className="text-left" type="submit" >{form.formState.isSubmitting && <Loader/>}Creer</Button>
+                <Button disabled={form.formState.isSubmitting} className="text-left" type="submit" >{form.formState.isSubmitting && <Loader />}Creer</Button>
             </form>
         </Form>
 

@@ -11,8 +11,8 @@ export default function Home() {
   return (
     <div>
       <AuthHeader />
-      <section className={cn("flex flex-col items-center py-8 px-4 text-center gap-6 ")}>
-        <BrandName className="text-4xl"/>
+      <section className={cn("flex flex-col items-center py-8 px-4 text-center gap-6 relative")}>
+        <BrandName className="text-4xl" />
         <p className={cn(" text-gray-500 text-xl font max-w-xl ")}>
           Echangez des idées et contribuez à façonner une communauté éducative dynamique. Nous croyons en la puissance de la <strong className="underline text-foreground font-bold ">critique constructive</strong> . Chaque commentaire, suggestion et évaluation contribuent à l&lsquo;amélioration continue de nos cours et à l&lsquo;enrichissement de votre expérience d&lsquo;apprentissage.
         </p>

@@ -5,8 +5,11 @@ import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar"
 import { getInitials } from "@/lib/utils"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 import { Button } from "./ui/button"
+import { useSession } from "next-auth/react"
 
-export default function UserCritiqueAvatar({user}:{user:User}) {
+export default function UserCritiqueAvatar() {
+    const { data: session } = useSession()
+    const user = session?.user as User
     return (
         <HoverCard>
             <HoverCardTrigger asChild>

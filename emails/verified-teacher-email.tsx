@@ -29,7 +29,7 @@ const VerifiedTeacherEmail = ({name}: KoalaWelcomeEmailProps) => (
         <Body style={main}>
             <Container style={container}>
                 <Img
-                    src={`${baseUrl}/static/logo.png`}
+                    src={`${baseUrl}/logo.png`}
                     width="170"
                     height="50"
                     alt="StudentVoice"
