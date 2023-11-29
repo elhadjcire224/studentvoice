@@ -1,3 +1,4 @@
+'use server'
 import prisma from '@/db/prisma';
 import { unstable_noStore as noStore } from 'next/cache'
 import { render } from '@react-email/render'
@@ -123,6 +124,16 @@ export async function fetchStudentStatsDetails(userId: string) {
         signaled,
         total
     }
+}
+
+export async function deleteUserById(userId:string){
+    if(!userId) return 
+    const user = await prisma.user.delete({
+        where:{
+            id:userId
+        }
+    })
+
 }
 
 export async function fetchCritiquesByUserId(userId: string) {
