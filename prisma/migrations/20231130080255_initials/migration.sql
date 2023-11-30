@@ -43,6 +43,7 @@ CREATE TABLE "User" (
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
+    "image_public_id" TEXT,
     "password" TEXT NOT NULL,
     "verified" BOOLEAN NOT NULL DEFAULT false,
     "banned" BOOLEAN NOT NULL DEFAULT false,
@@ -113,6 +114,17 @@ CREATE TABLE "Contact" (
     CONSTRAINT "Contact_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Subscription" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "publicKey" TEXT NOT NULL,
+    "authToken" TEXT NOT NULL,
+    "endpoint" TEXT NOT NULL,
+
+    CONSTRAINT "Subscription_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
@@ -127,6 +139,9 @@ CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationTok
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Subscription_endpoint_key" ON "Subscription"("endpoint");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -151,3 +166,6 @@ ALTER TABLE "Like" ADD CONSTRAINT "Like_userId_fkey" FOREIGN KEY ("userId") REFE
 
 -- AddForeignKey
 ALTER TABLE "Like" ADD CONSTRAINT "Like_critiqueId_fkey" FOREIGN KEY ("critiqueId") REFERENCES "Critique"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

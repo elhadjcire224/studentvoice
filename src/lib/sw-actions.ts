@@ -2,6 +2,7 @@
 import prisma from "@/db/prisma"
 
 import webpush from 'web-push'
+import { notifs } from "./constants"
 
 
 export async function fetchVapidPublicKey() {
@@ -32,7 +33,8 @@ export async function saveSubscription(data: string, userId?: string,) {
             userId
         },
         select: {
-            id: true
+            id: true,
+
         }
     })
 
@@ -46,13 +48,14 @@ export async function saveSubscription(data: string, userId?: string,) {
                 authToken: extrated.keys.auth
             }
         }).then(async (sub) => {
+            const notif = notifs.welcome
             const res = await webpush.sendNotification({
                 endpoint: sub.endpoint,
                 keys: {
                     auth: sub.authToken,
                     p256dh: sub.publicKey
                 }
-            }, JSON.stringify({ data: 'holhoh', sub: 'subuccc' }), {
+            }, JSON.stringify(notif), {
                 urgency: 'high'
             })
 
@@ -70,13 +73,14 @@ export async function saveSubscription(data: string, userId?: string,) {
             endpoint: extrated.endpoint
         }
     }).then(async (sub) => {
+        const notif = notifs.welcome
         const res = await webpush.sendNotification({
             endpoint: sub.endpoint,
             keys: {
                 auth: sub.authToken,
                 p256dh: sub.publicKey
             }
-        }, JSON.stringify({ data: 'holhoh', sub: 'subuccc' }), {
+        }, JSON.stringify(notif), {
             urgency: 'high'
         })
 

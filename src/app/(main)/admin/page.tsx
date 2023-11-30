@@ -17,7 +17,7 @@ export default async function Page() {
       </div>
       <div>
         <Separator />
-        {unverifiedTeachers.map((user) => <TeacherCard key={user.id} />)}
+        {unverifiedTeachers.map((user) => <TeacherCard user={user} key={user.id} />)}
       </div>
     </section>
   )

@@ -9,26 +9,26 @@ import { useSession } from "next-auth/react";
 
 
 
-export default function TeacherCard() {
+export default function TeacherCard({ user }: { user: any }) {
 	const router = useRouter()
 	const session = useSession()
-	const user = session.data?.user as any
+	// const user = session.data?.user as any
 	return (
 		<div className="details p-4 flex flex-col gap-4 ">
 			<div className="flex items-center gap-4 ">
 				<div>
 					<AvatarProf
-						subject={user.subject.name}
-						name={user.name}
-						image={user.image}
+						subject={user.subject?.name}
+						name={user?.name}
+						image={user?.image}
 					/>
 				</div>
 				<div className="flex flex-col gap-2">
 					<div>
-						<strong>Mr/Mdme&nbsp;&nbsp;{user.name}</strong>
+						<strong>Mr/Mdme&nbsp;&nbsp;{user?.name}</strong>
 					</div>
 					<div className="italic font-bold ">
-						Prof de {user.subject.name}
+						Prof de {user.subject?.name}
 					</div>
 				</div>
 			</div>
