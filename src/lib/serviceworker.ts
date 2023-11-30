@@ -16,8 +16,19 @@ export async function askpermission() {
         const r = await Notification.requestPermission()
         if (r == "granted") {
             await registerServiceWorker()
+            // return true
         }
+
+        return false
     }
+}
+
+export function ispermitted() {
+    if (Notification.permission == 'default') {
+        return true
+    }
+
+    return false
 }
 
 async function registerServiceWorker() {
