@@ -7,13 +7,13 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 import { Button } from "./ui/button"
 import { useSession } from "next-auth/react"
 
-export default function UserCritiqueAvatar() {
+export default function UserCritiqueAvatar({userCritique}:{userCritique:any}) {
     const { data: session } = useSession()
     const user = session?.user as User
     return (
         <HoverCard>
             <HoverCardTrigger asChild>
-                <Button variant="link">@{user.name}</Button>
+                <Button variant="link">@{userCritique.name}</Button>
             </HoverCardTrigger>
             <HoverCardContent className="w-auto max-w-lg overflow-hidden">
                 <div className="flex justify-between space-x-2">

@@ -26,7 +26,7 @@ export default async function page() {
             {user?.role == Role.TEACHER ? <TeacherDetailsStats userId={user?.id as string} /> : <StudentDetailsStats userId={user?.id as string} />}
             {/* <Separator  /> */}
             <div className="flex flex-row justify-end gap-4">
-                <Button size={"sm"} ><PenLine className="h-4" /> Editer Profile</Button>
+                {/* <Button size={"sm"} ><PenLine className="h-4" /> Editer Profile</Button> */}
                 <DeleteUserButton />
             </div>
             <div>

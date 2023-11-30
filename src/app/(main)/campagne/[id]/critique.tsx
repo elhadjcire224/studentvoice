@@ -17,11 +17,11 @@ import { useSession } from "next-auth/react";
 
 export default function CritiqueCard({ critique, campaignUserId }: { critique: unSignaledCritiques, campaignUserId: string }) {
     const { data: session } = useSession()
-    console.log(session)
+    // console.log(session)
     return (
         <Card className={cn(critique.signaled && "border-red-500")}>
             <CardHeader className={cn("pt-2 text-sm flex flex-row gap-4 justify-end  items-center", session?.user.role == Role.ADMIN && "justify-between")}>
-                {session?.user.role == Role.ADMIN && <UserCritiqueAvatar />}
+                {session?.user.role == Role.ADMIN && <UserCritiqueAvatar userCritique={critique.user} />}
                 <div className="flex flex-row gap-4 justify-end items-center"><Time updatedAt={critique.updatedAt} />
                     <CritiqueButtonActions campaignUserId={campaignUserId} critique={critique} /></div>
             </CardHeader>

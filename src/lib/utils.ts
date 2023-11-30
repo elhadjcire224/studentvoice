@@ -9,16 +9,6 @@ export function cn(...inputs: ClassValue[]) {
 
 
 
-export function requestpermission() {
-  const event = new CustomEvent("askperm", {
-    detail: {},
-    bubbles: true,
-    cancelable: true,
-    composed: false,
-  })
-  document.dispatchEvent(event)
-}
-
 export function getInitials(name:string|null) {
   if(!name) return null
   const words = name.split(' ');

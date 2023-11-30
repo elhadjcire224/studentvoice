@@ -2,6 +2,7 @@ import ToggleTheme from "@/theme/ToggleTheme";
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 import BrandName from "./BrandName";
+import AddNotificationButton from "./add-notification-button";
 
 export default function Header(){
 
@@ -11,6 +12,7 @@ export default function Header(){
                 <Logo />
                 <BrandName/>
             </div>
+            <AddNotificationButton/>
             <ToggleTheme/>
         </nav>
     )
