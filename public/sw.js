@@ -1,6 +1,9 @@
 self.addEventListener('install', (e) => {
+    clients.claim()
     self.skipWaiting()
 })
+
+
 
 self.addEventListener("push", (e) => {
     const data = e.data ? e.data.json() : {}
