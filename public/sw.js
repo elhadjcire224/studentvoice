@@ -1,9 +1,12 @@
 self.addEventListener('install', (e) => {
+    clients.claim()
     self.skipWaiting()
 })
 self.addEventListener('activate', (e) => {
     clients.claim()
 })
+
+
 
 
 
