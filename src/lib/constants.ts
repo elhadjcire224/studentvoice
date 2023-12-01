@@ -17,7 +17,7 @@ export const notifs = {
         body: "Cliquez pour voir la nouvelle campagne",
         data: {
             event: "newCampaign",
-            campaignId: "123456"
+            url: ''
         }
     },
     newcritique: {
@@ -25,8 +25,7 @@ export const notifs = {
         body: "Cliquez pour lire la nouvelle critique",
         data: {
             event: "newCritique",
-            critiqueId: "789012",
-            campaignId: "123456"
+            url: ''
         }
     },
     likeOnCritique: {

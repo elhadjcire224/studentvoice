@@ -1,5 +1,5 @@
 'use client'
-import { askpermission, ispermitted } from "@/lib/serviceworker"
+import { askpermission } from "@/lib/serviceworker"
 import { Button } from "./ui/button"
 import { Bell } from "lucide-react"
 export default function AddNotificationButton() {

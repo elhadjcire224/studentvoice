@@ -19,7 +19,7 @@ export default function CritiqueCard({ critique, campaignUserId }: { critique: u
     const { data: session } = useSession()
     // console.log(session)
     return (
-        <Card className={cn(critique.signaled && "border-red-500")}>
+        <Card id={critique.id} className={cn(critique.signaled && "border-red-500")}>
             <CardHeader className={cn("pt-2 text-sm flex flex-row gap-4 justify-end  items-center", session?.user.role == Role.ADMIN && "justify-between")}>
                 {session?.user.role == Role.ADMIN && <UserCritiqueAvatar userCritique={critique.user} />}
                 <div className="flex flex-row gap-4 justify-end items-center"><Time updatedAt={critique.updatedAt} />

@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CreateCampaignFormSchema, CreateCritiqueFormSchema, createCampaignFormType, createCritiqueFormType } from "@/lib/definitions"
+import { CreateCritiqueFormSchema, createCritiqueFormType } from "@/lib/definitions"
 import { useSession } from "next-auth/react"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
@@ -35,11 +35,11 @@ export default function CreateCritiqueForm({ closeDialog, campaignId }: Props) {
 
     async function onSubmit(values: createCritiqueFormType) {
 
-        const result = await createCritique(values,campaignId, user.id as string)
+        const result = await createCritique(values, campaignId, user.id as string)
         if (result.success) {
             closeDialog(false)
             toast.success(result.message)
-            return
+
         }
         else {
             toast.error(result.message)

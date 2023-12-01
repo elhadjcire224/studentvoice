@@ -6,11 +6,6 @@ self.addEventListener('activate', (e) => {
     clients.claim()
 })
 
-
-
-
-
-
 self.addEventListener("push", (e) => {
     const data = e.data ? e.data.json() : {}
     const promiseChain = null
@@ -29,12 +24,11 @@ self.addEventListener("push", (e) => {
             break;
         case "newcritique":
             promiseChain = self.registration.showNotification(data.title);
+            break;
         default:
             break;
     }
-    if (data?.action == "welcome") {
 
-    } else if (data)
 
-        e.waitUntil(promiseChain);
+    e.waitUntil(promiseChain);
 })

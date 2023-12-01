@@ -1,34 +1,18 @@
-import webpush from 'web-push'
+// import webpush from 'web-push'
 import { fetchVapidPublicKey, saveSubscription } from "./sw-actions"
-import { getSession, useSession } from "next-auth/react"
-
+import { getSession } from "next-auth/react"
+import { Subscription } from '@prisma/client'
 export async function askpermission() {
-    // const event = new CustomEvent("askperm", {
-    //     detail: {},
-    //     bubbles: true,
-    //     cancelable: true,
-    //     composed: false,
-    // })
-    // document.dispatchEvent(event)
+
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
         const r = await Notification.requestPermission()
         if (r == "granted") {
             await registerServiceWorker()
-            // return true
         }
-
         return false
     }
-}
-
-export function ispermitted() {
-    if (Notification.permission == 'default') {
-        return true
-    }
-
-    return false
 }
 
 async function registerServiceWorker() {
@@ -49,6 +33,26 @@ async function registerServiceWorker() {
     // console.log(session)
 
 }
+
+export async function config() {
+
+    // return webpush
+}
+
+export async function sendNotififs(payload: string, sub: Subscription) {
+    // const push = await config()
+    // await push.sendNotification({
+    //     endpoint: sub.endpoint,
+    //     keys: {
+    //         auth: sub.authToken,
+    //         p256dh: sub.publicKey
+    //     }
+    // }, payload, {
+    //     urgency: 'high'
+    // })
+}
+
+
 
 
 
