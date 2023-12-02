@@ -62,7 +62,7 @@ export async function saveSubscription(data: string, userId?: string,) {
                 urgency: 'high'
             })
         })
-
+        console.log('sub envoyer')
         return
     }
 
@@ -90,6 +90,8 @@ export async function sendWecolmeNotification(sub: Subscription) {
     }, JSON.stringify(notif), {
         urgency: 'high'
     })
+
+    console.log('sub send')
 }
 
 export async function sendCampagneCreateNotification(campaignId: string, campaignUserName: string) {

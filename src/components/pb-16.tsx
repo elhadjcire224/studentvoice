@@ -1,7 +1,7 @@
 'use client'
 
-export default function Pb16() {
+export default function Pb16({ value }: { value?: string }) {
     return (
-        <div className="pb-16"></div>
+        <div className={`p-16 ${value}`}></div>
     )
 }

@@ -10,6 +10,7 @@ import UserNames from "./user-names";
 import { Button } from "@/components/ui/button";
 import { PenLine } from "lucide-react";
 import DeleteUserButton from "@/components/delete-user-button";
+import Pb16 from "@/components/pb-16";
 
 
 
@@ -45,6 +46,7 @@ export default async function page() {
 
 
             </div>
+            <Pb16 />
         </section>
     )
 }

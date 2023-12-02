@@ -10,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { routes } from "@/lib/routes"
 import { signOut, useSession } from "next-auth/react"
 import { Role } from "@prisma/client"
-export default function FooterNav() {
+export default function FooterNav({ lastMessageId }: { lastMessageId: string }) {
     const pathname = usePathname();
     const session = useSession()
 
@@ -22,7 +22,7 @@ export default function FooterNav() {
             href: routes.PROFILE,
             icon: PenSquare
         }, {
-            href: routes.MESSAGE,
+            href: `${routes.MESSAGE}#${lastMessageId}`,
             icon: Mailbox
         }
     ]
@@ -66,7 +66,7 @@ export default function FooterNav() {
                 </PopoverTrigger>
                 <PopoverContent className=" w-32 flex flex-col p-0 gap-1 bg-secondary">
 
-                    <Link href={routes.PROFILE} className={buttonVariants({ variant: 'default' })}><User2 />Profile</Link>
+                    <Link href={`${routes.PROFILE}`} className={buttonVariants({ variant: 'default' })}><User2 />Profile</Link>
                     <Button onClick={async () => {
                         await signOut({ redirect: true })
                     }}><LogOut />deconnexion</Button>

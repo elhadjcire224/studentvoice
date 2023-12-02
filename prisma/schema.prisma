@@ -68,6 +68,7 @@ model User {
     likes           Like[]
     critiques       Critique[]
     subscriptions   Subscription[]
+    contacts        Contact[]
 }
 
 enum Role {
@@ -125,6 +126,7 @@ model Contact {
     userId    String?
     content   String   @db.Text
     createdAt DateTime @default(now())
+    User      User?    @relation(fields: [userId], references: [id])
 }
 
 model Subscription {

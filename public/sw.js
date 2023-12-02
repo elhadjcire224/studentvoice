@@ -1,5 +1,4 @@
 self.addEventListener('install', (e) => {
-    clients.claim()
     self.skipWaiting()
 })
 self.addEventListener('activate', (e) => {
@@ -7,6 +6,7 @@ self.addEventListener('activate', (e) => {
 })
 
 self.addEventListener("push", (e) => {
+    console.log('incomming push')
     const data = e.data ? e.data.json() : {}
     const promiseChain = null
 
