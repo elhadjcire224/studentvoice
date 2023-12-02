@@ -17,7 +17,12 @@ export default async function Contact() {
                 )) : null}
                 <Pb16 value={"pb-24"} />
             </div>)
-            : <div className="flex items-center justify-center"> il y&lsquo;a aucun message pour le moment </div>}
+            : (<div className="flex items-center justify-center">Bienvenue dans notre espace de suggestions et de messages !
+
+                Envie de partager une idée, un commentaire ou une question ? Tapez simplement dans la zone de texte ci-dessous et faites-nous part de votre pensée. Votre avis compte !
+
+                Si vous avez déjà partagé quelque chose avec nous, vous pouvez le voir ci-dessous. Alors, que voulez-vous nous dire aujourd&lsquo;hui ?
+            </div>)}
         </>
     )
 }
